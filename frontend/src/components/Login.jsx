@@ -18,7 +18,6 @@ export default function Login() {
       });
 
       if (response.status === 200) {
-        localStorage.setItem("user", JSON.stringify({ email: email }));
         navigate("/dashboard");
       }
     } catch (err) {
