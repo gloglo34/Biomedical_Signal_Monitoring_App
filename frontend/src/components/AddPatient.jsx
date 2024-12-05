@@ -1,12 +1,30 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function AddPatient() {
   const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
   const handleBacktoDashboard = () => {
     navigate("/dashboard1");
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post("http://localhost:5000/email/send", {
+        receivingEmail: email,
+      });
+
+      if (response.status === 200) {
+        setMessage("Email sent successfully to the patient.");
+      }
+    } catch (error) {
+      setMessage(error.response?.data?.error || "Failed to send email.");
+    }
   };
 
   return (
@@ -15,7 +33,9 @@ export default function AddPatient() {
       <p>Enter the email address of the patient you wish to monitor.</p>
       <p>They must have a Fitbit account.</p>
 
-      <form>
+      <p>{message}</p>
+
+      <form onSubmit={handleSubmit}>
         <input
           type="email"
           placeholder="Patient's Email"

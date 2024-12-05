@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 import AuthRoutes from "./routes/auth.js";
+import EmailRoutes from "./routes/EmailRoutes.js";
 
 dotenv.config();
 
@@ -27,6 +28,8 @@ app.get("/callback", (req, res) => {
 
 //routes
 app.use("/auth", AuthRoutes);
+
+app.use("/email", EmailRoutes);
 
 const PORT = 5000;
 app.listen(PORT, () => {
