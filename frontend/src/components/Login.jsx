@@ -20,7 +20,7 @@ export default function Login({ login }) {
       if (response.status === 200) {
         const sth = response.data.email;
         localStorage.setItem("email", JSON.stringify(sth));
-        navigate("/dashboard");
+        navigate("/dashboard1");
       }
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");
@@ -31,7 +31,6 @@ export default function Login({ login }) {
     <form onSubmit={handleLogin}>
       <div className="login-form-container">
         <h1>Login</h1>
-        <hr />
 
         {error && <p>{error}</p>}
 
@@ -58,7 +57,6 @@ export default function Login({ login }) {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <hr />
 
         <button type="submit" className="loginbtn">
           Login
