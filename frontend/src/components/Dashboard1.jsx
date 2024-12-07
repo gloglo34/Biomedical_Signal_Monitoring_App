@@ -6,6 +6,7 @@ export default function Dashboard1() {
 
   const handleLogout = () => {
     localStorage.removeItem("email");
+    localStorage.removeItem("userId");
     navigate("/");
   };
 

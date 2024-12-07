@@ -13,14 +13,17 @@ export default function AddPatient() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // const userId = localStorage.getItem("userId");
+    const userEmail = localStorage.getItem("email");
 
     try {
       const response = await axios.post("http://localhost:5000/email/send", {
         receivingEmail: email,
+        userEmail,
       });
 
       if (response.status === 200) {
-        setMessage("Email sent successfully to the patient.");
+        setMessage(response.data.message);
       }
     } catch (error) {
       setMessage(error.response?.data?.error || "Failed to send email.");

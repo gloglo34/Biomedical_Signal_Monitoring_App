@@ -2,57 +2,83 @@ import nodemailer from "nodemailer";
 import Patient from "../models/Patient.js";
 
 export const sendEmail = async (req, res) => {
-  const { receivingEmail } = req.body;
+  const { receivingEmail, userEmail } = req.body;
 
-  const redirect_uri = encodeURIComponent(
-    `http://localhost:5000/oauth2/callback`
-  );
-
-  if (!receivingEmail) {
-    return res.status(400).json({ error: "Receiving email is required." });
+  if (!receivingEmail || !userEmail) {
+    return res
+      .status(400)
+      .json({ error: "Receiving email and user email are required." });
   }
 
   try {
-    const fitbitAuthURL = `https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=${process.env.CLIENT_ID}&redirect_uri=${redirect_uri}&scope=activity+cardio_fitness+electrocardiogram+heartrate+irregular_rhythm_notifications+location+nutrition+oxygen_saturation+profile+respiratory_rate+settings+sleep+social+temperature+weight`;
+    // Find or create patient
+    const existingPatient = await Patient.findOne({ email: receivingEmail });
+    let emailContent;
+    let patientId;
 
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.APP_EMAIL,
-        pass: process.env.APP_PASSWORD,
-      },
-    });
+    if (!existingPatient) {
+      // Create a new patient
+      const newPatient = new Patient({
+        email: receivingEmail,
+        authorizationStatus: "Pending",
+        addedBy: [userEmail],
+      });
+      await newPatient.save();
+      patientId = newPatient._id;
 
-    const mailOptions = {
-      from: process.env.APP_EMAIL,
-      to: receivingEmail,
-      subject: "MediTrack Pro Authorization Request",
-      text: `Hi, please authorize access to your fitbit data by clicking the following link:${fitbitAuthURL}`,
-      html: `<p>Hi,</p>
-          <p>Plase authorize access to your fitbit data by clicking the link below:</p>
-          <a href="${fitbitAuthURL}">${fitbitAuthURL}</a>`,
-    };
+      // Generate email content for new patient
+      const redirect_uri = encodeURIComponent(
+        `http://localhost:5000/oauth2/callback`
+      );
 
-    await transporter.sendMail(mailOptions);
+      const fitbitAuthURL = `https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=${process.env.CLIENT_ID}&redirect_uri=${redirect_uri}&scope=activity+cardio_fitness+electrocardiogram+heartrate+irregular_rhythm_notifications+location+nutrition+oxygen_saturation+profile+respiratory_rate+settings+sleep+social+temperature+weight&state=${patientId}`;
 
-    res.status(200).json({ message: "Email sent successfully" });
+      emailContent = {
+        subject: "MediTrack Pro Authorization Request",
+        text: `Hi, please authorize access to your Fitbit data by clicking the following link: ${fitbitAuthURL}`,
+        html: `<p>Hi,</p>
+              <p>Please authorize access to your Fitbit data by clicking the link below:</p>
+              <a href="${fitbitAuthURL}">${fitbitAuthURL}</a>`,
+      };
 
-    try {
-      const existingPatient = await Patient.findOne({ email: receivingEmail });
-      if (!existingPatient) {
-        const newPatient = new Patient({
-          email: receivingEmail,
-          authorizationStatus: "Pending",
-        });
-        await newPatient.save();
-        console.log("Patient saved to database");
+      // Send the email for the new patient
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: process.env.APP_EMAIL,
+          pass: process.env.APP_PASSWORD,
+        },
+      });
+
+      const mailOptions = {
+        from: process.env.APP_EMAIL,
+        to: receivingEmail,
+        subject: emailContent.subject,
+        text: emailContent.text,
+        html: emailContent.html,
+      };
+
+      await transporter.sendMail(mailOptions);
+      return res.status(200).json({ message: "Email sent successfully" });
+    } else {
+      patientId = existingPatient._id;
+
+      // Check if the user already added the patient
+      if (!existingPatient.addedBy.includes(userEmail)) {
+        existingPatient.addedBy.push(userEmail);
+        await existingPatient.save();
       }
-      console.log("Patient already in databse");
-    } catch (dbError) {
-      console.error("Error saving patient to database:", dbError);
-      return res
-        .status(500)
-        .json({ error: "Failed to save patient to the database." });
+
+      // Determine response based on authorization status
+      if (existingPatient.authorizationStatus === "Pending") {
+        return res
+          .status(200)
+          .json({ message: `The patient is already awaiting authorization` });
+      } else if (existingPatient.authorizationStatus === "Authorized") {
+        return res.status(200).json({
+          message: `The patient is already authorized.`,
+        });
+      }
     }
   } catch (error) {
     console.error("Error sending email:", error);

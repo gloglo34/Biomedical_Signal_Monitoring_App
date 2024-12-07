@@ -1,9 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import "./Login.css";
 
-export default function Login({ login }) {
+export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -18,8 +17,11 @@ export default function Login({ login }) {
       });
 
       if (response.status === 200) {
-        const sth = response.data.email;
-        localStorage.setItem("email", JSON.stringify(sth));
+        // const sth = response.data.email;
+        // const userId = response.data.userId;
+        // localStorage.setItem("email", JSON.stringify(sth));
+        // localStorage.setItem("userId", JSON.stringify(userId));
+        localStorage.setItem("email", email);
         navigate("/dashboard1");
       }
     } catch (err) {

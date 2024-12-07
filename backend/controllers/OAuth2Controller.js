@@ -1,7 +1,8 @@
 import axios from "axios";
 import qs from "qs";
+import Patient from "../models/Patient.js";
 
-export const exchangeAuthorizationCode = async (code) => {
+export const exchangeAuthorizationCode = async (code, patientEmail) => {
   const clientCredentials = Buffer.from(
     `${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`
   ).toString("base64");
@@ -23,6 +24,15 @@ export const exchangeAuthorizationCode = async (code) => {
     );
 
     console.log("Access Token Response:", response.data);
+
+    //Extract token details
+    const { access_token, refresh_token, user_id, scope, expires_in } =
+      response.data;
+
+    //Update the database with received tokens
+    const patient = await Patient.findOne({ email: patientEmail });
+    if (patient) {
+    }
 
     return response.data;
   } catch (error) {
