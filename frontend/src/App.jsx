@@ -5,7 +5,7 @@ import Register from "./pages/Register";
 import Dashboard1 from "./pages/Dashboard1";
 import PrivateRoutes from "./utils/PrivateRoutes";
 import PublicRoutes from "./utils/PublicRoutes";
-import AddPatient from "./components/AddPatient";
+import AddPatient from "./pages/AddPatient";
 import Dashboard2 from "./pages/Dashboard2";
 import MainLayout from "./components/MainLayout";
 import Alerts from "./pages/Alerts";

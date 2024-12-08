@@ -1,5 +1,3 @@
-import "./MainLayout.css";
-
 export default function Header() {
   return (
     <header className="app-header">
