@@ -24,6 +24,10 @@ export default function AddPatient() {
 
       if (response.status === 200) {
         setMessage(response.data.message);
+
+        if (response.data.message.includes("already authorized")) {
+          navigate("/dashboard2", { state: { email } });
+        }
       }
     } catch (error) {
       setMessage(error.response?.data?.error || "Failed to send email.");
