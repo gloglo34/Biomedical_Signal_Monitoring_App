@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import "./MainLayout.css";
 
 export default function Sidebar() {
   const navigate = useNavigate();
@@ -10,7 +11,7 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="app-sidebar">
+    <aside className="sidebar">
       <ul>
         <li>
           <Link to="/dashboard2">Dashboard</Link>

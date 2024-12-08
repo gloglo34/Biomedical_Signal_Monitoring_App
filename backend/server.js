@@ -5,6 +5,7 @@ import cors from "cors";
 import AuthRoutes from "./routes/auth.js";
 import EmailRoutes from "./routes/EmailRoutes.js";
 import OAuth2Routes from "./routes/OAuth2Routes.js";
+import PatientRoutes from "./routes/PatientRoutes.js";
 
 dotenv.config();
 
@@ -33,6 +34,8 @@ app.use("/auth", AuthRoutes);
 app.use("/email", EmailRoutes);
 
 app.use("/oauth2", OAuth2Routes);
+
+app.use("/patients", PatientRoutes);
 
 const PORT = 5000;
 app.listen(PORT, () => {

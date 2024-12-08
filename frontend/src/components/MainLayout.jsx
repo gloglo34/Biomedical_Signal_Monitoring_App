@@ -5,10 +5,10 @@ import Sidebar from "./Sidebar";
 export default function MainLayout() {
   return (
     <div className="layout">
-      <Header />
-      <div className="layout-content">
-        <Sidebar />
-        <main>
+      <Sidebar />
+      <div className="main-content">
+        <Header />
+        <main className="content">
           <Outlet />
         </main>
       </div>
