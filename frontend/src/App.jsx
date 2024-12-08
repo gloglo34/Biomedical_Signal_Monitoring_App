@@ -1,15 +1,15 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Login from "./components/Login";
-import Register from "./components/Register";
-import Dashboard1 from "./components/Dashboard1";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Dashboard1 from "./pages/Dashboard1";
 import PrivateRoutes from "./utils/PrivateRoutes";
 import PublicRoutes from "./utils/PublicRoutes";
 import AddPatient from "./components/AddPatient";
-import Dashboard2 from "./components/Dashboard2";
+import Dashboard2 from "./pages/Dashboard2";
 import MainLayout from "./components/MainLayout";
-import Alerts from "./components/Alerts";
-import Insights from "./components/Insights";
+import Alerts from "./pages/Alerts";
+import Insights from "./pages/Insights";
 
 export default function App() {
   return (
