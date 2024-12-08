@@ -1,6 +1,14 @@
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Sidebar() {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("email");
+    navigate("/");
+  };
+
   return (
     <aside className="app-sidebar">
       <ul>
@@ -14,6 +22,9 @@ export default function Sidebar() {
           <Link to="/dashboard2/insights">Insights</Link>
         </li>
       </ul>
+      <div>
+        <button onClick={handleLogout}>Logout</button>
+      </div>
     </aside>
   );
 }
