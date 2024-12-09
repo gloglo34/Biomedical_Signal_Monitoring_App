@@ -1,5 +1,7 @@
 import express from "express";
 import Patient from "../models/Patient.js";
+import axios from "axios";
+import { refreshAccessToken } from "../controllers/OAuth2Controller.js";
 
 const router = express.Router();
 
@@ -9,12 +11,28 @@ router.get("/devices", async (req, res) => {
   const devicesUrl = `https://api.fitbit.com/1/user/${patient.fitbitUserId}/devices.json`;
 
   try {
-    const respnse = await fetch(devicesUrl, {
+    let accessToken = patient.fitbitAccessToken;
+
+    let respnse = await fetch(devicesUrl, {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${patient.fitbitAccessToken}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     });
+
+    if (respnse.status === 401) {
+      console.log("Access token expired. Refreshing...");
+
+      accessToken = await refreshAccessToken(patient);
+
+      respnse = await fetch(devicesUrl, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+    }
+
     if (!respnse.ok) {
       return res.status(respnse.status).json({ error: respnse.statusText });
     }
@@ -34,12 +52,28 @@ router.get("/sleep", async (req, res) => {
   const sleepUrl = `https://api.fitbit.com/1.2/user/${patient.fitbitUserId}/sleep/date/2024-12-01.json`;
 
   try {
-    const respnse = await fetch(sleepUrl, {
+    let accessToken = patient.fitbitAccessToken;
+
+    let respnse = await fetch(sleepUrl, {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${patient.fitbitAccessToken}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     });
+
+    if (respnse.status === 401) {
+      console.log("Access token expired. Refreshing...");
+
+      accessToken = await refreshAccessToken(patient);
+
+      respnse = await fetch(devicesUrl, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+    }
+
     if (!respnse.ok) {
       return res.status(respnse.status).json({ error: respnse.statusText });
     }
@@ -59,12 +93,27 @@ router.get("/spo2", async (req, res) => {
   const spo2Url = `https://api.fitbit.com/1/user/${patient.fitbitUserId}/spo2/date/2024-12-01.json`;
 
   try {
-    const respnse = await fetch(spo2Url, {
+    let accessToken = patient.fitbitAccessToken;
+
+    let respnse = await fetch(spo2Url, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${patient.fitbitAccessToken}`,
       },
     });
+
+    if (respnse.status === 401) {
+      console.log("Access token expired. Refreshing...");
+
+      accessToken = await refreshAccessToken(patient);
+
+      respnse = await fetch(devicesUrl, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+    }
     if (!respnse.ok) {
       return res.status(respnse.status).json({ error: respnse.statusText });
     }
