@@ -6,6 +6,8 @@ import AuthRoutes from "./routes/auth.js";
 import EmailRoutes from "./routes/EmailRoutes.js";
 import OAuth2Routes from "./routes/OAuth2Routes.js";
 import PatientRoutes from "./routes/PatientRoutes.js";
+import Patient from "./models/Patient.js";
+import DataRoutes from "./routes/DataRoutes.js";
 
 dotenv.config();
 
@@ -36,6 +38,8 @@ app.use("/email", EmailRoutes);
 app.use("/oauth2", OAuth2Routes);
 
 app.use("/patients", PatientRoutes);
+
+app.use("/fitbitData", DataRoutes);
 
 const PORT = 5000;
 app.listen(PORT, () => {
