@@ -5,9 +5,7 @@ export default function StepsCard() {
         <h5>Steps</h5>
         <i className="material-symbols-outlined">footprint</i>
       </span>
-      <div className="card-content">
-        <p>1000</p>
-      </div>
+      <div className="card-content"></div>
     </div>
   );
 }

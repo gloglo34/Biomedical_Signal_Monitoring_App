@@ -49,7 +49,7 @@ router.get("/devices", async (req, res) => {
 router.get("/sleep", async (req, res) => {
   const { email } = req.query;
   const patient = await Patient.findOne({ email });
-  const sleepUrl = `https://api.fitbit.com/1.2/user/${patient.fitbitUserId}/sleep/date/2024-12-01.json`;
+  const sleepUrl = `https://api.fitbit.com/1.2/user/${patient.fitbitUserId}/sleep/date/today.json`;
 
   try {
     let accessToken = patient.fitbitAccessToken;
@@ -66,7 +66,7 @@ router.get("/sleep", async (req, res) => {
 
       accessToken = await refreshAccessToken(patient);
 
-      respnse = await fetch(devicesUrl, {
+      respnse = await fetch(sleepUrl, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -90,7 +90,7 @@ router.get("/sleep", async (req, res) => {
 router.get("/spo2", async (req, res) => {
   const { email } = req.query;
   const patient = await Patient.findOne({ email });
-  const spo2Url = `https://api.fitbit.com/1/user/${patient.fitbitUserId}/spo2/date/2024-12-01.json`;
+  const spo2Url = `https://api.fitbit.com/1/user/${patient.fitbitUserId}/spo2/date/today.json`;
 
   try {
     let accessToken = patient.fitbitAccessToken;
@@ -98,7 +98,7 @@ router.get("/spo2", async (req, res) => {
     let respnse = await fetch(spo2Url, {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${patient.fitbitAccessToken}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     });
 
@@ -107,7 +107,7 @@ router.get("/spo2", async (req, res) => {
 
       accessToken = await refreshAccessToken(patient);
 
-      respnse = await fetch(devicesUrl, {
+      respnse = await fetch(spo2Url, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -123,6 +123,47 @@ router.get("/spo2", async (req, res) => {
     res.json(data);
   } catch (error) {
     console.error("Error fetching spo2 data:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.get("/heartrate", async (req, res) => {
+  const { email } = req.query;
+  const patient = await Patient.findOne({ email });
+  const heartrateUrl = `https://api.fitbit.com/1/user/${patient.fitbitUserId}/activities/heart/date/today/1d/5min.json`;
+  // https://api.fitbit.com/1/user/GGNJL9/activities/heart/date/2019-01-01/1d/1min/time/08:00/08:30.json
+
+  try {
+    let accessToken = patient.fitbitAccessToken;
+
+    let respnse = await fetch(heartrateUrl, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    if (respnse.status === 401) {
+      console.log("Access token expired. Refreshing...");
+
+      accessToken = await refreshAccessToken(patient);
+
+      respnse = await fetch(heartrateUrl, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+    }
+    if (!respnse.ok) {
+      return res.status(respnse.status).json({ error: respnse.statusText });
+    }
+
+    const data = await respnse.json();
+    console.log(data);
+    res.json(data);
+  } catch (error) {
+    console.error("Error fetching heart rate data:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });

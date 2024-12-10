@@ -5,9 +5,7 @@ export default function HrvCard() {
         <h5>HRV</h5>
         <i className="material-symbols-outlined">show_chart</i>
       </span>
-      <div className="card-content">
-        <p>8hr</p>
-      </div>
+      <div className="card-content"></div>
     </div>
   );
 }

@@ -5,9 +5,7 @@ export default function SleepCard() {
         <h5>Sleep</h5>
         <i className="material-symbols-outlined">bedtime</i>
       </span>
-      <div className="card-content">
-        <p>8 hr</p>
-      </div>
+      <div className="card-content"></div>
     </div>
   );
 }

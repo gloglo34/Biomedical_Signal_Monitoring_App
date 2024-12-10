@@ -5,9 +5,7 @@ export default function SkinTempCard() {
         <h5>Skin Temperature</h5>
         <i className="material-symbols-outlined">thermometer</i>
       </span>
-      <div className="card-content">
-        <p>0 C</p>
-      </div>
+      <div className="card-content"></div>
     </div>
   );
 }
