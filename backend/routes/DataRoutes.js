@@ -130,8 +130,7 @@ router.get("/spo2", async (req, res) => {
 router.get("/heartrate", async (req, res) => {
   const { email } = req.query;
   const patient = await Patient.findOne({ email });
-  const heartrateUrl = `https://api.fitbit.com/1/user/${patient.fitbitUserId}/activities/heart/date/today/1d/5min.json`;
-  // https://api.fitbit.com/1/user/GGNJL9/activities/heart/date/2019-01-01/1d/1min/time/08:00/08:30.json
+  const heartrateUrl = `https://api.fitbit.com/1/user/${patient.fitbitUserId}/activities/heart/date/today/1d/15min.json`;
 
   try {
     let accessToken = patient.fitbitAccessToken;
