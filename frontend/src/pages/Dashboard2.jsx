@@ -16,9 +16,9 @@ export default function Dashboard2() {
     <div className="grid-container">
       <HrCard />
       <BrCard />
+      <HrvCard />
       <Spo2Card />
       <SleepCard />
-      <HrvCard />
       <SkinTempCard />
       <StepsCard />
     </div>

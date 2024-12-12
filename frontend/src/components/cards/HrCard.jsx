@@ -12,11 +12,11 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement);
 
 export default function HrCard() {
   const [chartData, setChartData] = useState({
-    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+    labels: [],
     datasets: [
       {
         label: "Heart Rate",
-        data: [33, 53, 85, 41, 44, 65],
+        data: [],
       },
     ],
   });
