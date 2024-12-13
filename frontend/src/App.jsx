@@ -10,6 +10,7 @@ import Dashboard2 from "./pages/Dashboard2";
 import MainLayout from "./components/MainLayout";
 import Alerts from "./pages/Alerts";
 import Insights from "./pages/Insights";
+import PatientProfile from "./pages/PatientProfile";
 
 export default function App() {
   return (
@@ -22,6 +23,7 @@ export default function App() {
             <Route index element={<Dashboard2 />} />
             <Route path="alerts" element={<Alerts />} />
             <Route path="insights" element={<Insights />} />
+            <Route path="patientProfile" element={<PatientProfile />} />
           </Route>
         </Route>
         <Route element={<PublicRoutes />}>

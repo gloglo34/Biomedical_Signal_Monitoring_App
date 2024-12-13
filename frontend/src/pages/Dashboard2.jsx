@@ -9,9 +9,6 @@ import SkinTempCard from "../components/cards/SkinTempCard";
 import HrvCard from "../components/cards/HrvCard";
 
 export default function Dashboard2() {
-  const location = useLocation();
-  const email = location.state?.email;
-
   return (
     <div className="grid-container">
       <HrCard />

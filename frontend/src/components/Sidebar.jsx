@@ -12,15 +12,30 @@ export default function Sidebar() {
 
   return (
     <aside className="sidebar">
-      <ul>
-        <li>
+      <div className="sidebar-title">
+        <div className="sidebar-brand">MediTrack</div>
+        <span className="close-icon">X</span>
+      </div>
+
+      <ul className="sidebar-list">
+        <li className="sidebar-list-item">
+          <i className="material-symbols-outlined">dashboard</i>
           <Link to="/dashboard2">Dashboard</Link>
         </li>
-        <li>
+
+        <li className="sidebar-list-item">
+          <i className="material-symbols-outlined">notifications</i>
           <Link to="/dashboard2/alerts">Alerts</Link>
         </li>
-        <li>
+
+        <li className="sidebar-list-item">
+          <i className="material-symbols-outlined">search_insights</i>
           <Link to="/dashboard2/insights">Insights</Link>
+        </li>
+
+        <li className="sidebar-list-item">
+          <i className="material-symbols-outlined">person</i>
+          <Link to="/dashboard2/patientProfile">Profile</Link>
         </li>
       </ul>
       <div>
