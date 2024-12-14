@@ -26,13 +26,15 @@
   justify-content: space-between;
   box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
   /* background-color: #161b61; */
-  color: #161b61;
+  background-color: #0f2573;
+  color: white;
 }
 /* End Header */
 
 /* Sidebar */
 .sidebar {
-  background-color: #161b61;
+  /* background-color: #161b61; */
+  background-color: #0f2573;
   color: white;
   display: flex;
   flex-direction: column;

@@ -19,7 +19,7 @@ export default function Insights() {
   return (
     <div>
       {/* Tab Navigation */}
-      <div className="tabs-menu">
+      <div className="tab">
         <button
           className={activeTab === "heartRate" ? "tab active" : "tab"}
           onClick={() => setActiveTab("heartRate")}

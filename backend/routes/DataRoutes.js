@@ -207,4 +207,44 @@ router.get("/hrv", async (req, res) => {
   }
 });
 
+router.get("/profile", async (req, res) => {
+  const { email } = req.query;
+  const patient = await Patient.findOne({ email });
+  const profileUrl = `https://api.fitbit.com/1/user/${patient.fitbitUserId}/profile.json`;
+
+  try {
+    let accessToken = patient.fitbitAccessToken;
+
+    let respnse = await fetch(profileUrl, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    if (respnse.status === 401) {
+      console.log("Access token expired. Refreshing...");
+
+      accessToken = await refreshAccessToken(patient);
+
+      respnse = await fetch(profileUrl, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+    }
+    if (!respnse.ok) {
+      return res.status(respnse.status).json({ error: respnse.statusText });
+    }
+
+    const data = await respnse.json();
+    console.log(data);
+    res.json(data);
+  } catch (error) {
+    console.error("Error fetching hrv data:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 export default router;
