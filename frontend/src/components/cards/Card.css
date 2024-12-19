@@ -24,40 +24,36 @@
   background-color: white;
   text-align: center;
   padding: 20px 0;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: #161b61;
 }
 
 .hr-card {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   color: #161b61;
   grid-area: hr-card-area;
 }
 
 .br-card {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   grid-area: br-card-area;
 }
 
 .spo2-card {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   grid-area: spo2-card-area;
 }
 
 .sleep-card {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   grid-area: sleep-card-area;
 }
 
 .hrv-card {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   grid-area: hrv-card-area;
 }
 
 .skinTemp-card {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   grid-area: skinTemp-card-area;
 }
 
 .steps-card {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   grid-area: steps-card-area;
 }

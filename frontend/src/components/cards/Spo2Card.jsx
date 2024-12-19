@@ -34,7 +34,9 @@ export default function Spo2Card() {
         const res = await response.json();
         const data = res.minutes;
         const values = data.map((item) => item.value);
-        const minutes = data.map((item) => item.minute);
+        const minutes = data.map((item) =>
+          new Date(item.minute).toLocaleTimeString()
+        );
 
         setChartData({
           labels: minutes,
