@@ -61,7 +61,7 @@ export default function HrvCard() {
         <i className="material-symbols-outlined">show_chart</i>
       </span>
       <div className="card-content">
-        <Line data={hrvChartData} />
+        <Line data={hrvChartData} height={300} width={400} />
       </div>
     </div>
   );

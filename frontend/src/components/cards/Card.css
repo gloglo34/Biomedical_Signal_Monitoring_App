@@ -1,11 +1,19 @@
 .grid-container {
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-areas:
+    "hr-card-area hrv-card-area steps-card-area"
+    "hr-card-area hrv-card-area steps-card-area"
+    "hr-card-area hrv-card-area sleep-card-area"
+    "spo2-card-area br-card-area sleep-card-area"
+    "spo2-card-area br-card-area skinTemp-card-area"
+    "spo2-card-area br-card-area skinTemp-card-area";
   gap: 10px;
-  padding: 10px;
 }
 
 .card-header {
+  flex: 1;
   display: flex;
   justify-content: space-between;
   margin-left: 15px;
@@ -21,28 +29,35 @@
 .hr-card {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   color: #161b61;
+  grid-area: hr-card-area;
 }
 
 .br-card {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  grid-area: br-card-area;
 }
 
 .spo2-card {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  grid-area: spo2-card-area;
 }
 
 .sleep-card {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  grid-area: sleep-card-area;
 }
 
 .hrv-card {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  grid-area: hrv-card-area;
 }
 
 .skinTemp-card {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  grid-area: skinTemp-card-area;
 }
 
 .steps-card {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  grid-area: steps-card-area;
 }

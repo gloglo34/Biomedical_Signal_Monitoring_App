@@ -12,12 +12,12 @@ export default function Dashboard2() {
   return (
     <div className="grid-container">
       <HrCard />
-      <BrCard />
+      <StepsCard />
       <HrvCard />
+      <BrCard />
       <Spo2Card />
       <SleepCard />
       <SkinTempCard />
-      <StepsCard />
     </div>
   );
 }

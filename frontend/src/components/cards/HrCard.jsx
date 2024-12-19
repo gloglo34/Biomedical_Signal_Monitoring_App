@@ -17,6 +17,7 @@ export default function HrCard() {
       {
         label: "Heart Rate",
         data: [],
+        backgroundColor: "rgba(255, 99, 132, 0.2)",
       },
     ],
   });
@@ -59,7 +60,7 @@ export default function HrCard() {
         <i className="material-symbols-outlined">monitor_heart</i>
       </span>
       <div className="card-content">
-        <Line data={chartData} />
+        <Line data={chartData} height={300} width={400} />
       </div>
     </div>
   );
