@@ -58,7 +58,7 @@ export default function StepsCard() {
         <i className="material-symbols-outlined">footprint</i>
       </span>
       <div className="card-content">
-        <Bar data={chartData} width={400} />
+        <Bar data={chartData} width={400} height={200} />
       </div>
     </div>
   );

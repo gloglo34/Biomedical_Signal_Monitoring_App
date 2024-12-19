@@ -362,4 +362,53 @@ router.get("/steps", async (req, res) => {
   }
 });
 
+//Apply caching
+router.get("/skinTemp", async (req, res) => {
+  const { email } = req.query;
+  const patient = await Patient.findOne({ email });
+  const skinTempUrl = `https://api.fitbit.com/1/user/${patient.fitbitUserId}/temp/skin/date/today.json`;
+
+  try {
+    const cacheKey = `${email}_skinTemp`;
+    if (myCache.has(cacheKey)) {
+      console.log("Getting skin temp data from cache");
+      return res.json(myCache.get(cacheKey));
+    } else {
+      let accessToken = patient.fitbitAccessToken;
+
+      let respnse = await fetch(skinTempUrl, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      if (respnse.status === 401) {
+        console.log("Access token expired. Refreshing...");
+
+        accessToken = await refreshAccessToken(patient);
+
+        respnse = await fetch(skinTempUrl, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+      }
+      if (!respnse.ok) {
+        return res.status(respnse.status).json({ error: respnse.statusText });
+      }
+
+      const data = await respnse.json();
+      myCache.set(cacheKey, data);
+      console.log("Getting skin temp data from API");
+      // console.log(data);
+      res.json(data);
+    }
+  } catch (error) {
+    console.error("Error fetching skin temp data:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 export default router;
