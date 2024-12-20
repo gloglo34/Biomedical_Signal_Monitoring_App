@@ -6,9 +6,16 @@ import {
   LinearScale,
   PointElement,
   LineElement,
+  Tooltip,
 } from "chart.js";
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Tooltip
+);
 
 export default function HrCard() {
   const [chartData, setChartData] = useState({
@@ -17,10 +24,21 @@ export default function HrCard() {
       {
         label: "Heart Rate",
         data: [],
-        backgroundColor: "rgba(255, 99, 132, 0.2)",
       },
     ],
   });
+
+  const options = {
+    responsive: true,
+    scales: {
+      y: {
+        title: {
+          display: true,
+          text: "Heart Rate (bpm)",
+        },
+      },
+    },
+  };
 
   useEffect(() => {
     const fetchHeartRateData = async () => {
@@ -43,6 +61,8 @@ export default function HrCard() {
             {
               label: "Heart Rate",
               data: values,
+              tension: 0.3,
+              borderColor: "rgba(137, 196, 244)",
             },
           ],
         });
@@ -60,7 +80,7 @@ export default function HrCard() {
         <i className="material-symbols-outlined">monitor_heart</i>
       </span>
       <div className="card-content">
-        <Line data={chartData} height={300} width={400} />
+        <Line data={chartData} options={options} height={300} width={400} />
       </div>
     </div>
   );

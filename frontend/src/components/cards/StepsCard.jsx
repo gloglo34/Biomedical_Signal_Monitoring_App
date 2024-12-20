@@ -4,10 +4,11 @@ import {
   CategoryScale,
   LinearScale,
   BarElement,
+  Tooltip,
 } from "chart.js";
 import { useEffect, useState } from "react";
 
-ChartJS.register(CategoryScale, LinearScale, BarElement);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip);
 
 export default function StepsCard() {
   const [chartData, setChartData] = useState({
@@ -19,6 +20,18 @@ export default function StepsCard() {
       },
     ],
   });
+
+  const options = {
+    responsive: true,
+    scales: {
+      y: {
+        title: {
+          display: true,
+          text: "Steps",
+        },
+      },
+    },
+  };
 
   useEffect(() => {
     const fetchStepsData = async () => {
@@ -41,6 +54,8 @@ export default function StepsCard() {
             {
               labels: "Steps",
               data: values,
+              backgroundColor: "rgba(137, 196, 244)",
+              borderRadius: 2,
             },
           ],
         });
@@ -58,7 +73,7 @@ export default function StepsCard() {
         <i className="material-symbols-outlined">footprint</i>
       </span>
       <div className="card-content">
-        <Bar data={chartData} width={400} height={200} />
+        <Bar data={chartData} options={options} width={400} height={200} />
       </div>
     </div>
   );

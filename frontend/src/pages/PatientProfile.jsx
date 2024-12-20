@@ -37,9 +37,9 @@ export default function PatientProfile() {
   }, []);
 
   return (
-    <div>
+    <div className="profile-card">
       <h2>Patient Profile Page</h2>
-      <img src={avatar} />
+      <img src={avatar} className="profile-avatar" />
       <p>
         <strong>First Name: </strong> {firstName}
       </p>

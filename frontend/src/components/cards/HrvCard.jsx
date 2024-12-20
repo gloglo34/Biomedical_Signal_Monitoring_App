@@ -6,9 +6,16 @@ import {
   LinearScale,
   PointElement,
   LineElement,
+  Tooltip,
 } from "chart.js";
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Tooltip
+);
 
 export default function HrvCard() {
   const [hrvChartData, setHrvChartData] = useState({
@@ -20,6 +27,18 @@ export default function HrvCard() {
       },
     ],
   });
+
+  const options = {
+    responsive: true,
+    scales: {
+      y: {
+        title: {
+          display: true,
+          text: "RMSSD (ms)",
+        },
+      },
+    },
+  };
 
   useEffect(() => {
     const fetchHrvData = async () => {
@@ -44,6 +63,8 @@ export default function HrvCard() {
             {
               label: "HRV",
               data: rmssdValues,
+              borderColor: "rgba(137, 196, 244)",
+              tension: 0.3,
             },
           ],
         });
@@ -61,7 +82,7 @@ export default function HrvCard() {
         <i className="material-symbols-outlined">show_chart</i>
       </span>
       <div className="card-content">
-        <Line data={hrvChartData} height={300} width={400} />
+        <Line data={hrvChartData} options={options} height={300} width={400} />
       </div>
     </div>
   );

@@ -37,10 +37,15 @@ export default function Sidebar() {
           <i className="material-symbols-outlined">person</i>
           <Link to="/dashboard2/patientProfile">Profile</Link>
         </li>
+        <div>
+          <li className="sidebar-list-item">
+            <i className="material-symbols-outlined">logout</i>
+            <Link to="/" onClick={handleLogout}>
+              Logout
+            </Link>
+          </li>
+        </div>
       </ul>
-      <div>
-        <button onClick={handleLogout}>Logout</button>
-      </div>
     </aside>
   );
 }

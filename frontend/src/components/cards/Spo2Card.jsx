@@ -6,9 +6,16 @@ import {
   LinearScale,
   PointElement,
   LineElement,
+  Tooltip,
 } from "chart.js";
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Tooltip
+);
 
 export default function Spo2Card() {
   const [chartData, setChartData] = useState({
@@ -20,6 +27,18 @@ export default function Spo2Card() {
       },
     ],
   });
+
+  const options = {
+    responsive: true,
+    scales: {
+      y: {
+        title: {
+          display: true,
+          text: "Spo2 (%)",
+        },
+      },
+    },
+  };
 
   useEffect(() => {
     const fetchSpo2Data = async () => {
@@ -44,6 +63,8 @@ export default function Spo2Card() {
             {
               label: "Spo2",
               data: values,
+              borderColor: "rgba(137, 196, 244)",
+              tension: 0.3,
             },
           ],
         });
@@ -61,7 +82,7 @@ export default function Spo2Card() {
         <i className="material-symbols-outlined">spo2</i>
       </span>
       <div className="card-content">
-        <Line data={chartData} height={300} width={400} />
+        <Line data={chartData} options={options} height={300} width={400} />
       </div>
     </div>
   );
