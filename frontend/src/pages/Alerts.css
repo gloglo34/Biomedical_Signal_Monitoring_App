@@ -1,0 +1,44 @@
+.alerts-page {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.alerts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.alert-item {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  transition: background-color 0.3s;
+}
+
+.alert-item.unread {
+  background-color: #e1dede; /* Highlight unread alerts */
+  font-weight: bold;
+}
+
+.alert-item.read {
+  background-color: #f9f9f9;
+}
+
+.alert-actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.alert-actions button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.alert-actions button:hover {
+  background-color: #ddd;
+}

@@ -8,6 +8,7 @@ import OAuth2Routes from "./routes/OAuth2Routes.js";
 import PatientRoutes from "./routes/PatientRoutes.js";
 import Patient from "./models/Patient.js";
 import DataRoutes from "./routes/DataRoutes.js";
+import AlertRoutes from "./routes/AlertRoutes.js";
 
 dotenv.config();
 
@@ -40,6 +41,8 @@ app.use("/oauth2", OAuth2Routes);
 app.use("/patients", PatientRoutes);
 
 app.use("/fitbitData", DataRoutes);
+
+app.use("/", AlertRoutes);
 
 const PORT = 5000;
 app.listen(PORT, () => {

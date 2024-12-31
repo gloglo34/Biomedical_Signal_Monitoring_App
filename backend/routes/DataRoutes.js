@@ -2,6 +2,7 @@ import express from "express";
 import Patient from "../models/Patient.js";
 import { refreshAccessToken } from "../controllers/OAuth2Controller.js";
 import NodeCache from "node-cache";
+import Alert from "../models/Alert.js";
 
 const myCache = new NodeCache({ stdTTL: 1800 });
 
@@ -142,7 +143,7 @@ router.get("/spo2", async (req, res) => {
 router.get("/heartrate", async (req, res) => {
   const { email } = req.query;
   const patient = await Patient.findOne({ email });
-  const heartrateUrl = `https://api.fitbit.com/1/user/${patient.fitbitUserId}/activities/heart/date/today/1d/15min.json`;
+  const heartrateUrl = `https://api.fitbit.com/1/user/${patient.fitbitUserId}/activities/heart/date/today/1d/5min.json`;
 
   try {
     let accessToken = patient.fitbitAccessToken;
@@ -154,6 +155,7 @@ router.get("/heartrate", async (req, res) => {
       },
     });
 
+    //1) Handle expired tokens
     if (respnse.status === 401) {
       console.log("Access token expired. Refreshing...");
 
@@ -166,6 +168,7 @@ router.get("/heartrate", async (req, res) => {
         },
       });
     }
+
     if (!respnse.ok) {
       return res.status(respnse.status).json({ error: respnse.statusText });
     }
@@ -173,6 +176,45 @@ router.get("/heartrate", async (req, res) => {
     const data = await respnse.json();
     // console.log(data);
     console.log("Getting heartrate data from API");
+
+    //2) Extract heart rate intraday dataset
+    const hrData = data["activities-heart-intraday"]?.dataset ?? [];
+
+    //3) Apply threshold logic
+    const NORMAL_LOW = 66;
+    const NORMAL_HIGH = 90;
+    const abnormalReadings = hrData.filter(
+      (item) => item.value < NORMAL_LOW || item.value > NORMAL_HIGH
+    );
+
+    //4) If abnormal readings are found handle the alert
+    if (abnormalReadings.length > 0) {
+      for (const reading of abnormalReadings) {
+        const existingAlert = await Alert.findOne({
+          patientId: patient._id,
+          time: reading.time,
+          value: reading.value,
+        });
+
+        if (!existingAlert) {
+          const newAlert = new Alert({
+            patientId: patient._id,
+            email: patient.email,
+            timestamp: new Date(),
+            time: reading.time,
+            value: reading.value,
+            message: `Abnormal heart rate detected: ${reading.value} bpm at ${reading.time}`,
+            read: false,
+          });
+          await newAlert.save();
+          console.log("New abnormal heart rate alert saved.");
+        } else {
+          console.log("Duplicate alert detected. Skipping.");
+        }
+      }
+    }
+
+    //5) Finally return the original heart rate data (for frontend to display the chart)
     res.json(data);
   } catch (error) {
     console.error("Error fetching heart rate data:", error);
