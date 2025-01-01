@@ -14,7 +14,7 @@ router.get("/heartrate", async (req, res) => {
   try {
     //Get today's date and calculate the date 2 days ago
     const today = new Date();
-    const threeDaysAgo = new Date(today.getTime() - 2 * 24 * 60 * 60 * 1000);
+    const threeDaysAgo = new Date(today.getTime() - 3 * 24 * 60 * 60 * 1000);
 
     // Fetch heart rate data for the last 3 days
     const heartRateData = await HeartRate.find({
@@ -51,7 +51,7 @@ router.get("/hrv", async (req, res) => {
   try {
     //Get today's date and calculate the date 2 days ago
     const today = new Date();
-    const threeDaysAgo = new Date(today.getTime() - 2 * 24 * 60 * 60 * 1000);
+    const threeDaysAgo = new Date(today.getTime() - 3 * 24 * 60 * 60 * 1000);
 
     //Fetch HRV data for last 3 days
     const hrvData = await HRV.find({

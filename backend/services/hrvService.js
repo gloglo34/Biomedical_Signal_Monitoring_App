@@ -24,19 +24,11 @@ export async function saveHRV(email, fitbitUserId, accessToken, date) {
     }
 
     const data = await response.json();
-    const intradayHRV = data.hrv[0]?.minutes || [];
-
-    const hrvData = intradayHRV.map((entry) => ({
-      time: entry.minute,
-      rmssd: entry.value.rmssd,
-      coverage: entry.value.coverage,
-      hf: entry.value.hf,
-      lf: entry.value.lf,
-    }));
+    const minutes = data.hrv[0]?.minutes || [];
 
     await HRV.updateOne(
       { email, date },
-      { email, date, intraday: hrvData },
+      { email, date, minutes },
       { upsert: true }
     );
     console.log(`HRV data saved for patient ${fitbitUserId} on ${date}`);

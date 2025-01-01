@@ -1,15 +1,89 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./Insights.css";
+import { Line } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Tooltip,
+} from "chart.js";
+import { useActionState } from "react";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Tooltip
+);
 
 export default function Insights() {
   const [activeTab, setActiveTab] = useState("heartRate"); // Default tab
+
+  const restingHeartRateChartData = {
+    labels: ["Day 1", "Day 2", "Day 3"],
+    datasets: [
+      {
+        label: "Resting Heart Rate (bpm)",
+        data: [70, 68, 69],
+        borderColor: "hsla(287, 91.70%, 42.50%, 0.30)",
+        backgroundColor: "rgba(31, 111, 164, 0.3)",
+        fill: false,
+        tension: 0.1,
+      },
+    ],
+  };
 
   const renderTabContent = () => {
     switch (activeTab) {
       case "heartRate":
         return (
-          <div>
-            <h4>Heart Rate insights</h4>
+          <div className="heartrate-insights-container">
+            <div className="heartrate-section">
+              <div className="graph-container">
+                <h5>Resting Heart Rate History (Last 3 Days)</h5>
+                <Line data={restingHeartRateChartData} />
+              </div>
+
+              <div className="info-container">
+                <p>
+                  The graph shows the resting heart rate trend for the last
+                  three days.
+                </p>
+              </div>
+            </div>
+
+            <div className="heartrate-section">
+              <div className="graph-container">
+                <h5>Intraday Heart Rate History (Available for Last 3 Days)</h5>
+
+                <label htmlFor="date-select">Select Date: </label>
+                <select
+                  id="date-select"
+                  onChange={(e) =>
+                    console.log(`Selected Date: ${e.target.value}`)
+                  }
+                >
+                  <option value="2025-01-01">2025-01-01</option>
+                  <option value="2024-12-31">2024-12-31</option>
+                  <option value="2024-12-30">2024-12-30</option>
+                </select>
+                <Line data={restingHeartRateChartData} />
+              </div>
+
+              <div className="info-container">
+                <p>
+                  This graph shows intraday heart rate insights for selected
+                  day.
+                </p>
+                <p>
+                  Use the dropdown to select a date and view intraday heart rate
+                  data. Data only availble for the last 3 days.
+                </p>
+              </div>
+            </div>
           </div>
         );
 
