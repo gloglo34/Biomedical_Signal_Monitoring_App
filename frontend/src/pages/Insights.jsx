@@ -1,129 +1,38 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./Insights.css";
-import { Line } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Tooltip,
-} from "chart.js";
-import { useActionState } from "react";
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Tooltip
-);
+import HeartRateInsights from "./HeartRateInsights";
+import SleepInsights from "./SleepInsights";
+import Spo2Insights from "./Spo2Insights";
+import StepsInsights from "./StepsInsights";
+import HRVInsights from "./HRVInsights";
+import BRInsights from "./BRInsights";
+import SkinTempInsights from "./SkinTempInsights";
 
 export default function Insights() {
   const [activeTab, setActiveTab] = useState("heartRate"); // Default tab
 
-  const restingHeartRateChartData = {
-    labels: ["Day 1", "Day 2", "Day 3"],
-    datasets: [
-      {
-        label: "Resting Heart Rate (bpm)",
-        data: [70, 68, 69],
-        borderColor: "hsla(287, 91.70%, 42.50%, 0.30)",
-        backgroundColor: "rgba(31, 111, 164, 0.3)",
-        fill: false,
-        tension: 0.1,
-      },
-    ],
-  };
-
   const renderTabContent = () => {
     switch (activeTab) {
       case "heartRate":
-        return (
-          <div className="heartrate-insights-container">
-            <div className="heartrate-section">
-              <div className="graph-container">
-                <h5>Resting Heart Rate History (Last 3 Days)</h5>
-                <Line data={restingHeartRateChartData} />
-              </div>
-
-              <div className="info-container">
-                <p>
-                  The graph shows the resting heart rate trend for the last
-                  three days.
-                </p>
-              </div>
-            </div>
-
-            <div className="heartrate-section">
-              <div className="graph-container">
-                <h5>Intraday Heart Rate History (Available for Last 3 Days)</h5>
-
-                <label htmlFor="date-select">Select Date: </label>
-                <select
-                  id="date-select"
-                  onChange={(e) =>
-                    console.log(`Selected Date: ${e.target.value}`)
-                  }
-                >
-                  <option value="2025-01-01">2025-01-01</option>
-                  <option value="2024-12-31">2024-12-31</option>
-                  <option value="2024-12-30">2024-12-30</option>
-                </select>
-                <Line data={restingHeartRateChartData} />
-              </div>
-
-              <div className="info-container">
-                <p>
-                  This graph shows intraday heart rate insights for selected
-                  day.
-                </p>
-                <p>
-                  Use the dropdown to select a date and view intraday heart rate
-                  data. Data only availble for the last 3 days.
-                </p>
-              </div>
-            </div>
-          </div>
-        );
+        return <HeartRateInsights />;
 
       case "sleep":
-        return (
-          <div>
-            <h4>Sleep insights</h4>
-          </div>
-        );
+        return <SleepInsights />;
 
       case "steps":
-        return <h4>Steps insights</h4>;
+        return <StepsInsights />;
 
       case "oxygen":
-        return (
-          <div>
-            <h4>Blood oxygen saturation Insights</h4>
-          </div>
-        );
+        return <Spo2Insights />;
 
       case "hrv":
-        return (
-          <div>
-            <h4>Heart Rate Variability Insights</h4>
-          </div>
-        );
+        return <HRVInsights />;
 
       case "skinTemp":
-        return (
-          <div>
-            <h4>Skin Temperature Insights</h4>
-          </div>
-        );
+        return <SkinTempInsights />;
 
       case "breathingRate":
-        return (
-          <div>
-            <h4>Breathing Rate Insights</h4>
-          </div>
-        );
+        return <BRInsights />;
     }
   };
 
