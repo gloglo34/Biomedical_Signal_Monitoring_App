@@ -1,0 +1,43 @@
+import Spo2 from "../models/Spo2.js";
+import { refreshAccessToken } from "../controllers/OAuth2Controller.js";
+
+export async function saveSpo2(email, fitbitUserId, accessToken, date) {
+  const spo2Url = `https://api.fitbit.com/1/user/${fitbitUserId}/spo2/date/${date}/all.json`;
+
+  try {
+    let response = await fetch(spo2Url, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+
+    if (response.status === 401) {
+      console.log("Access token expired. Refreshing...");
+      accessToken = await refreshAccessToken(fitbitUserId);
+      response = await fetch(spo2Url, {
+        method: "GET",
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+    }
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch spo2 data");
+    }
+
+    const data = await response.json();
+    const minutes = data.minutes || [];
+
+    //Save spo2 data to database
+    await Spo2.updateOne(
+      { email, date },
+      { email, date, minutes },
+      { upsert: true }
+    );
+
+    console.log(`Spo2 data saved for ${email} on ${date}`);
+  } catch (error) {
+    console.error(
+      `Error saving Spo2 data for ${email} on ${date}:`,
+      error.message
+    );
+  }
+}

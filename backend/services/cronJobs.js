@@ -2,6 +2,7 @@ import cron from "node-cron";
 import Patient from "../models/Patient.js";
 import { saveHeartRate } from "./heartRateService.js";
 import { saveHRV } from "./hrvService.js";
+import { saveSpo2 } from "./Spo2Service.js";
 
 cron.schedule("59 * * * *", async () => {
   console.log("Running hourly heart rate sync...");
@@ -27,6 +28,15 @@ cron.schedule("59 * * * *", async () => {
         today
       );
       console.log(`HRV data saved for patient: ${patient.email}`);
+
+      //Save Spo2 data
+      await saveSpo2(
+        patient.email,
+        patient.fitbitUserId,
+        patient.fitbitAccessToken,
+        today
+      );
+      console.log(`Spo2 data saved for patient: ${patient.email}`);
     } catch (error) {
       console.error(
         `Error syncing heart rate for patient ${patient.email}:`,
