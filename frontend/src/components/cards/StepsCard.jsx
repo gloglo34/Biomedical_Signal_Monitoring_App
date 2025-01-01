@@ -69,7 +69,7 @@ export default function StepsCard() {
   return (
     <div className="steps-card">
       <span className="card-header">
-        <h5>Steps</h5>
+        <h4>Steps</h4>
         <i className="material-symbols-outlined">footprint</i>
       </span>
       <div className="card-content">

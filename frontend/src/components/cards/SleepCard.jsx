@@ -72,7 +72,7 @@ export default function SleepCard() {
   return (
     <div className="sleep-card">
       <span className="card-header">
-        <h5>Sleep</h5>
+        <h4>Sleep</h4>
         <i className="material-symbols-outlined">bedtime</i>
       </span>
       <div className="card-content">

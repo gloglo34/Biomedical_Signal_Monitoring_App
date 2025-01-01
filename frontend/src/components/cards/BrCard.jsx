@@ -87,7 +87,7 @@ export default function BrCard() {
   return (
     <div className="br-card">
       <span className="card-header">
-        <h5>Breathing Rate</h5>
+        <h4>Breathing Rate</h4>
         <i className="material-symbols-outlined">pulmonology</i>
       </span>
       <div className="card-content">

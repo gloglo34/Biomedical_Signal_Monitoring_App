@@ -78,7 +78,7 @@ export default function Spo2Card() {
   return (
     <div className="spo2-card">
       <span className="card-header">
-        <h5>Oxygen Saturation</h5>
+        <h4>Oxygen Saturation</h4>
         <i className="material-symbols-outlined">spo2</i>
       </span>
       <div className="card-content">
