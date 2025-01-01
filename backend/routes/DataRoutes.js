@@ -181,7 +181,7 @@ router.get("/heartrate", async (req, res) => {
     const hrData = data["activities-heart-intraday"]?.dataset ?? [];
 
     //3) Apply threshold logic
-    const NORMAL_LOW = 66;
+    const NORMAL_LOW = 60;
     const NORMAL_HIGH = 90;
     const abnormalReadings = hrData.filter(
       (item) => item.value < NORMAL_LOW || item.value > NORMAL_HIGH
