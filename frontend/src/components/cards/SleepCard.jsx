@@ -25,6 +25,8 @@ export default function SleepCard() {
 
   useEffect(() => {
     const fetchSleepData = async () => {
+      if (!selectedPatientEmail) return;
+
       try {
         const response = await fetch(
           `http://localhost:5000/fitbitData/sleep?email=${selectedPatientEmail}`
@@ -51,7 +53,7 @@ export default function SleepCard() {
           return;
         }
 
-        const data = res.sleep[0].levels.data;
+        const data = res.sleep[0]?.levels?.data;
         const levels = data.map((item) => {
           switch (item.level) {
             case "wake":
