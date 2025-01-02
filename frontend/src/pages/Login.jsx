@@ -12,14 +12,30 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
+      //Log in the user
       const response = await axios.post("http://localhost:5000/auth/login", {
         email,
         password,
       });
 
       if (response.status === 200) {
+        //Save logged in user to localstorage
         localStorage.setItem("email", email);
-        navigate("/dashboard1");
+
+        // //Fetch the list of authorized patients
+        const patientsResponse = await axios.get(
+          `http://localhost:5000/patients?userEmail=${email}`
+        );
+
+        if (patientsResponse.status === 200) {
+          const authorizedPatients = patientsResponse.data;
+
+          if (authorizedPatients.length > 0) {
+            navigate("/dashboard2");
+          } else {
+            navigate("/dashboard1");
+          }
+        }
       }
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");

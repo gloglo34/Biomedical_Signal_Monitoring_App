@@ -3,6 +3,7 @@ import Patient from "../models/Patient.js";
 
 const router = express.Router();
 
+//This route gets authorized patients of the specified user
 router.get("/", async (req, res) => {
   const { userEmail } = req.query;
 
@@ -16,7 +17,6 @@ router.get("/", async (req, res) => {
       { email: 1, _id: 0 }
     );
 
-    const p = Patient.find();
     res.status(200).json(patients);
   } catch (error) {
     console.error("Error fetching patients:", error);
