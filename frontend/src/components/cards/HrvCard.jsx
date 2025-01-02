@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { PatientContext } from "../../context/PatientContext";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -18,6 +19,7 @@ ChartJS.register(
 );
 
 export default function HrvCard() {
+  const { selectedPatientEmail } = useContext(PatientContext);
   const [hrvChartData, setHrvChartData] = useState({
     labels: [],
     datasets: [
@@ -42,16 +44,34 @@ export default function HrvCard() {
 
   useEffect(() => {
     const fetchHrvData = async () => {
+      if (!selectedPatientEmail) return;
+
       try {
         const response = await fetch(
-          `http://localhost:5000/fitbitData/hrv?email=gloriazhou34@gmail.com`
+          `http://localhost:5000/fitbitData/hrv?email=${selectedPatientEmail}`
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
 
         const res = await response.json();
-        const data = res.hrv[0].minutes;
+
+        //Check if HRV data is available
+        if (!res.hrv || res.hrv.lenght === 0) {
+          console.warn("No HRV data available for selected patient.");
+          setHrvChartData({
+            labels: [],
+            datasets: [
+              {
+                label: "HRV",
+                data: [],
+              },
+            ],
+          });
+          return;
+        }
+
+        const data = res.hrv[0]?.minutes || [];
         const times = data.map((item) =>
           new Date(item.minute).toLocaleTimeString()
         );
@@ -73,7 +93,7 @@ export default function HrvCard() {
       }
     };
     fetchHrvData();
-  }, []);
+  }, [selectedPatientEmail]);
 
   return (
     <div className="hrv-card">

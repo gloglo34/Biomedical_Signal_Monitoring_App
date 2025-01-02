@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { PatientContext } from "../../context/PatientContext";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -18,6 +19,7 @@ ChartJS.register(
 );
 
 export default function Spo2Card() {
+  const { selectedPatientEmail } = useContext(PatientContext);
   const [chartData, setChartData] = useState({
     labels: [],
     datasets: [
@@ -42,15 +44,33 @@ export default function Spo2Card() {
 
   useEffect(() => {
     const fetchSpo2Data = async () => {
+      if (!selectedPatientEmail) return;
+
       try {
         const response = await fetch(
-          `http://localhost:5000/fitbitData/spo2?email=gloriazhou34@gmail.com`
+          `http://localhost:5000/fitbitData/spo2?email=${selectedPatientEmail}`
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
 
         const res = await response.json();
+
+        //Check if Spo2 data is available
+        if (!res.minutes || res.minutes.length === 0) {
+          console.warn("No Spo2 data available for selected patient.");
+          setChartData({
+            labels: [],
+            datasets: [
+              {
+                label: "Spo2",
+                data: [],
+              },
+            ],
+          });
+          return;
+        }
+
         const data = res.minutes;
         const values = data.map((item) => item.value);
         const minutes = data.map((item) =>
@@ -73,7 +93,7 @@ export default function Spo2Card() {
       }
     };
     fetchSpo2Data();
-  }, []);
+  }, [selectedPatientEmail]);
 
   return (
     <div className="spo2-card">

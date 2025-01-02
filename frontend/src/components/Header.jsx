@@ -1,9 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import { PatientContext } from "../context/PatientContext";
 
 export default function Header() {
   const [patients, setPatients] = useState([]);
-  const [selectedPatientEmail, setSelectedPatientEmail] = useState("");
+  const { selectedPatientEmail, setSelectedPatientEmail } =
+    useContext(PatientContext);
   const [lastSyncTime, setLastSyncTime] = useState("");
   const [error, setError] = useState("");
 
@@ -59,10 +61,10 @@ export default function Header() {
     fetchLastSyncTime();
   }, [selectedPatientEmail]);
 
-  const handlePatientChange = (e) => {
-    setSelectedPatientEmail(e.target.value);
-    setLastSyncTime(""); // Reset sync time while fetching new data
-  };
+  // const handlePatientChange = (e) => {
+  //   setSelectedPatientEmail(e.target.value);
+  //   setLastSyncTime(""); // Reset sync time while fetching new data
+  // };
 
   return (
     <header className="header">
@@ -78,7 +80,7 @@ export default function Header() {
           <select
             id="patient-select"
             value={selectedPatientEmail}
-            onChange={handlePatientChange}
+            onChange={(e) => setSelectedPatientEmail(e.target.value)}
           >
             {patients.map((patient) => (
               <option key={patient.email} value={patient.email}>

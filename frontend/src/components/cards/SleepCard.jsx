@@ -1,3 +1,5 @@
+import { useEffect, useState, useContext } from "react";
+import { PatientContext } from "../../context/PatientContext";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -6,11 +8,11 @@ import {
   LinearScale,
   PointElement,
 } from "chart.js";
-import { useEffect, useState } from "react";
 
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement);
 
 export default function SleepCard() {
+  const { selectedPatientEmail } = useContext(PatientContext);
   const [sleepChartData, SetSleepChartData] = useState({
     labels: [],
     datasets: [
@@ -25,7 +27,7 @@ export default function SleepCard() {
     const fetchSleepData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/fitbitData/sleep?email=gloriazhou34@gmail.com`
+          `http://localhost:5000/fitbitData/sleep?email=${selectedPatientEmail}`
         );
 
         if (!response.ok) {
@@ -33,6 +35,22 @@ export default function SleepCard() {
         }
 
         const res = await response.json();
+
+        //Check if sleep data is available
+        if (!res.sleep || res.sleep.length === 0) {
+          console.warn("No sleep data available for selected patient.");
+          SetSleepChartData({
+            labels: [],
+            datasets: [
+              {
+                label: "Sleep",
+                data: [],
+              },
+            ],
+          });
+          return;
+        }
+
         const data = res.sleep[0].levels.data;
         const levels = data.map((item) => {
           switch (item.level) {
@@ -67,7 +85,7 @@ export default function SleepCard() {
       }
     };
     fetchSleepData();
-  }, []);
+  }, [selectedPatientEmail]);
 
   return (
     <div className="sleep-card">

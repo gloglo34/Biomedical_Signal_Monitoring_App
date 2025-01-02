@@ -1,3 +1,5 @@
+import { useEffect, useState, useContext } from "react";
+import { PatientContext } from "../../context/PatientContext";
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -7,11 +9,11 @@ import {
   Tooltip,
   scales,
 } from "chart.js";
-import { useEffect, useState } from "react";
 
 ChartJS.register(LinearScale, CategoryScale, BarElement, Tooltip);
 
 export default function BrCard() {
+  const { selectedPatientEmail } = useContext(PatientContext);
   const [chartData, setChartData] = useState({
     labels: [],
     datasets: [
@@ -42,9 +44,11 @@ export default function BrCard() {
 
   useEffect(() => {
     const fetchBrData = async () => {
+      if (!selectedPatientEmail) return;
+
       try {
         const response = await fetch(
-          `http://localhost:5000/fitbitData/br?email=gloriazhou34@gmail.com`
+          `http://localhost:5000/fitbitData/br?email=${selectedPatientEmail}`
         );
 
         if (!response.ok) {
@@ -52,18 +56,36 @@ export default function BrCard() {
         }
 
         const res = await response.json();
-        const data = res.br[0].value;
+
+        //Check if the br array is empty
+        if (!res.br || res.br.length === 0) {
+          console.warn("No BR data available for the selected patient");
+          setChartData({
+            labels: ["Deep", "REM", "Full", "Light"],
+            datasets: [
+              {
+                label: "Breathing Rate (bpm)",
+                data: [0, 0, 0, 0], // Empty data
+                backgroundColor: "rgba(137, 196, 244)",
+                borderRadius: 5,
+              },
+            ],
+          });
+          return;
+        }
+
+        const data = res.br[0]?.value || {};
 
         // Extract sleep stages and breathing rates
         const sleepStages = ["Deep", "REM", "Full", "Light"];
 
         const breathingRates = [
-          data.deepSleepSummary.breathingRate,
-          data.remSleepSummary.breathingRate !== -1
-            ? data.remSleepSummary.breathingRate
+          data.deepSleepSummary?.breathingRate || null,
+          data.remSleepSummary?.breathingRate !== -1
+            ? data.remSleepSummary?.breathingRate
             : null,
-          data.fullSleepSummary.breathingRate,
-          data.lightSleepSummary.breathingRate,
+          data.fullSleepSummary?.breathingRate || null,
+          data.lightSleepSummary?.breathingRate || null,
         ];
 
         setChartData({
@@ -82,7 +104,7 @@ export default function BrCard() {
       }
     };
     fetchBrData();
-  }, []);
+  }, [selectedPatientEmail]);
 
   return (
     <div className="br-card">

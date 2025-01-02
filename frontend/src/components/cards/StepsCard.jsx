@@ -6,11 +6,13 @@ import {
   BarElement,
   Tooltip,
 } from "chart.js";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { PatientContext } from "../../context/PatientContext";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip);
 
 export default function StepsCard() {
+  const { selectedPatientEmail } = useContext(PatientContext);
   const [chartData, setChartData] = useState({
     labels: [],
     datasets: [
@@ -35,9 +37,11 @@ export default function StepsCard() {
 
   useEffect(() => {
     const fetchStepsData = async () => {
+      if (!selectedPatientEmail) return;
+
       try {
         const response = await fetch(
-          `http://localhost:5000/fitbitData/steps?email=gloriazhou34@gmail.com`
+          `http://localhost:5000/fitbitData/steps?email=${selectedPatientEmail}`
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -64,7 +68,7 @@ export default function StepsCard() {
       }
     };
     fetchStepsData();
-  }, []);
+  }, [selectedPatientEmail]);
 
   return (
     <div className="steps-card">

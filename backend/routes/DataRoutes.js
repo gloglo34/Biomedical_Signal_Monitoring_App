@@ -4,7 +4,7 @@ import { refreshAccessToken } from "../controllers/OAuth2Controller.js";
 import NodeCache from "node-cache";
 import Alert from "../models/Alert.js";
 
-const myCache = new NodeCache({ stdTTL: 1800 });
+const myCache = new NodeCache({ stdTTL: 1 });
 
 const router = express.Router();
 

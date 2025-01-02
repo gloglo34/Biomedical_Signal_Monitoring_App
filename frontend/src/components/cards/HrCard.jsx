@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { PatientContext } from "../../context/PatientContext";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -18,6 +19,7 @@ ChartJS.register(
 );
 
 export default function HrCard() {
+  const { selectedPatientEmail } = useContext(PatientContext);
   const [chartData, setChartData] = useState({
     labels: [],
     datasets: [
@@ -42,9 +44,11 @@ export default function HrCard() {
 
   useEffect(() => {
     const fetchHeartRateData = async () => {
+      if (!selectedPatientEmail) return;
+
       try {
         const response = await fetch(
-          `http://localhost:5000/fitbitData/heartrate?email=gloriazhou34@gmail.com`
+          `http://localhost:5000/fitbitData/heartrate?email=${selectedPatientEmail}`
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -71,7 +75,7 @@ export default function HrCard() {
       }
     };
     fetchHeartRateData();
-  }, []);
+  }, [selectedPatientEmail]);
 
   return (
     <div className="hr-card">
