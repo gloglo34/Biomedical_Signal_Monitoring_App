@@ -13,7 +13,6 @@ export default function AddPatient() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // const userId = localStorage.getItem("userId");
     const userEmail = localStorage.getItem("email");
 
     try {
@@ -26,7 +25,7 @@ export default function AddPatient() {
         setMessage(response.data.message);
 
         if (response.data.message.includes("already authorized")) {
-          navigate("/dashboard2", { state: { email } });
+          navigate("/dashboard2");
         }
       }
     } catch (error) {

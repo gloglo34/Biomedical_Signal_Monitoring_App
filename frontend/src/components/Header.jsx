@@ -61,11 +61,6 @@ export default function Header() {
     fetchLastSyncTime();
   }, [selectedPatientEmail]);
 
-  // const handlePatientChange = (e) => {
-  //   setSelectedPatientEmail(e.target.value);
-  //   setLastSyncTime(""); // Reset sync time while fetching new data
-  // };
-
   return (
     <header className="header">
       <h2>Welcome {userEmail}</h2>

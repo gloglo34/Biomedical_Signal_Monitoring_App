@@ -1,4 +1,3 @@
-import { useLocation } from "react-router-dom";
 import HrCard from "../components/cards/HrCard";
 import BrCard from "../components/cards/BrCard";
 import Spo2Card from "../components/cards/Spo2Card";

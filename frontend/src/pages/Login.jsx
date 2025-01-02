@@ -18,10 +18,6 @@ export default function Login() {
       });
 
       if (response.status === 200) {
-        // const sth = response.data.email;
-        // const userId = response.data.userId;
-        // localStorage.setItem("email", JSON.stringify(sth));
-        // localStorage.setItem("userId", JSON.stringify(userId));
         localStorage.setItem("email", email);
         navigate("/dashboard1");
       }
