@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { PatientContext } from "../context/PatientContext";
 import "./Insights.css";
 import { Line } from "react-chartjs-2";
 
@@ -20,13 +21,14 @@ ChartJS.register(
 );
 
 export default function SpO2Insights() {
-  const [loading, setLoading] = useState(true);
+  const { selectedPatientEmail } = useContext(PatientContext);
+
   const [selectedDate, setSelectedDate] = useState("");
   const [intradayData, setIntradayData] = useState([]);
-  const [lastThreeDates, setLastThreeDates] = useState([]);
+  const [lastThreeDates, setLastThreeDates] = useState(generateLastThreeDates);
 
   // Generate the last 3 dates dynamically
-  const generateLastThreeDates = () => {
+  function generateLastThreeDates() {
     const dates = [];
     for (let i = 0; i < 3; i++) {
       const date = new Date();
@@ -34,38 +36,35 @@ export default function SpO2Insights() {
       dates.push(date.toISOString().split("T")[0]); // Format: YYYY-MM-DD
     }
     return dates;
-  };
+  }
 
   useEffect(() => {
-    // Set the last 3 dates
-    const lastThree = generateLastThreeDates();
-    setLastThreeDates(lastThree);
-    setSelectedDate(lastThree[0]); // Default to the most recent date
-  }, []);
+    if (!selectedPatientEmail) return;
 
-  useEffect(() => {
     // Fetch SpO2 intraday data for the selected date
     const fetchIntradayData = async () => {
-      if (!selectedDate) return;
-
-      setLoading(true);
       try {
         const response = await fetch(
-          `http://localhost:5000/history/spo2?email=gloriazhou34@gmail.com`
+          `http://localhost:5000/history/spo2?email=${selectedPatientEmail}`
         );
         const data = await response.json();
 
         const entry = data.spo2.find((item) => item.date === selectedDate);
-        setIntradayData(entry ? entry.minutes : []); // Set intraday data or empty array if not available
-        setLoading(false);
+        setIntradayData(entry ? entry.minutes : []);
       } catch (error) {
         console.error("Error fetching SpO2 intraday data:", error);
-        setLoading(false);
       }
     };
 
     fetchIntradayData();
-  }, [selectedDate]);
+  }, [selectedDate, selectedPatientEmail]);
+
+  useEffect(() => {
+    // Reset date selection when patient changes
+    const lastThree = generateLastThreeDates();
+    setLastThreeDates(lastThree);
+    setSelectedDate(lastThree[0]);
+  }, [selectedPatientEmail]);
 
   const intradaySpO2ChartData = {
     labels: intradayData.map((item) =>
@@ -82,10 +81,6 @@ export default function SpO2Insights() {
       },
     ],
   };
-
-  if (loading) {
-    return <p>Loading data...</p>;
-  }
 
   return (
     <div className="spo2-insights-container">

@@ -1,6 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { PatientContext } from "../context/PatientContext";
 
 export default function PatientProfile() {
+  const { selectedPatientEmail } = useContext(PatientContext);
+
   const [age, setAge] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -11,30 +14,32 @@ export default function PatientProfile() {
   const [avatar, setAvatar] = useState("");
 
   useEffect(() => {
+    if (!selectedPatientEmail) return;
+
     const fetchPatientProfileData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/fitbitData/profile?email=gloriazhou34@gmail.com`
+          `http://localhost:5000/fitbitData/profile?email=${selectedPatientEmail}`
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
 
         const res = await response.json();
-        setAge(res.user.age);
-        setGender(res.user.gender);
-        setFirstName(res.user.firstName);
-        setLastName(res.user.lastName);
-        setWeight(res.user.weight);
-        setHeight(res.user.height);
-        setDateOfBirth(res.user.dateOfBirth);
-        setAvatar(res.user.avatar);
+        setAge(res.user.age || "N/A");
+        setGender(res.user.gender || "N/A");
+        setFirstName(res.user.firstName || "N/A");
+        setLastName(res.user.lastName || "N/A");
+        setWeight(res.user.weight || "N/A");
+        setHeight(res.user.height || "N/A");
+        setDateOfBirth(res.user.dateOfBirth || "N/A");
+        setAvatar(res.user.avatar || "https://via.placeholder.com/150");
       } catch (error) {
         console.error("There was a problem with the fetch operation: ", error);
       }
     };
     fetchPatientProfileData();
-  }, []);
+  }, [selectedPatientEmail]);
 
   return (
     <div className="profile-card">

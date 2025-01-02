@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { PatientContext } from "../context/PatientContext";
 import "./Insights.css";
 import { Line } from "react-chartjs-2";
 
@@ -20,6 +21,8 @@ ChartJS.register(
 );
 
 export default function HeartRateInsights() {
+  const { selectedPatientEmail } = useContext(PatientContext);
+
   const [restingHeartRateData, setRestingHeartRateData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedDate, setSelectedDate] = useState("");
@@ -34,18 +37,17 @@ export default function HeartRateInsights() {
       date.setDate(date.getDate() - i);
       dates.push(date.toISOString().split("T")[0]); //Format:YYYY:MM:DD
     }
-    // return dates.reverse(); //Ensure chronological order
     return dates;
   };
 
-  //   const lastThreeDates = generateLastThreeDates();
-
   useEffect(() => {
+    if (!selectedPatientEmail) return;
+
     //Fetch data from history endpoint (database)
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/history/heartrate?email=gloriazhou34@gmail.com`
+          `http://localhost:5000/history/heartrate?email=${selectedPatientEmail}`
         );
 
         const data = await response.json();
@@ -75,16 +77,16 @@ export default function HeartRateInsights() {
       }
     };
     fetchData();
-  }, []);
+  }, [selectedPatientEmail]);
 
   useEffect(() => {
+    if (!selectedDate || !selectedPatientEmail) return;
+
     //Fetch intraday data for the selected date
     const fetchIntradayData = async () => {
-      if (!selectedDate) return;
-
       try {
         const response = await fetch(
-          `http://localhost:5000/history/heartrate?email=gloriazhou34@gmail.com`
+          `http://localhost:5000/history/heartrate?email=${selectedPatientEmail}`
         );
         const data = await response.json();
 
@@ -97,7 +99,7 @@ export default function HeartRateInsights() {
       }
     };
     fetchIntradayData();
-  }, [selectedDate]);
+  }, [selectedDate, selectedPatientEmail]);
 
   const restingHeartRateChartData = {
     labels: restingHeartRateData.map((item) => item.date),

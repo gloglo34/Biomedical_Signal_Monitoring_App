@@ -1,15 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { PatientContext } from "../context/PatientContext";
 import "./Alerts.css";
 
 export default function Alerts() {
+  const { selectedPatientEmail } = useContext(PatientContext);
+
   const [alerts, setAlerts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!selectedPatientEmail) return;
+
     const fetchAlerts = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/alerts?email=gloriazhou34@gmail.com`
+          `http://localhost:5000/alerts?email=${selectedPatientEmail}`
         );
 
         if (!response.ok) {
@@ -25,7 +30,7 @@ export default function Alerts() {
       }
     };
     fetchAlerts();
-  }, []);
+  }, [selectedPatientEmail]);
 
   const markAsRead = async (id) => {
     try {

@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { PatientContext } from "../context/PatientContext";
 import "./Insights.css";
 import { Line } from "react-chartjs-2";
 
@@ -20,6 +21,8 @@ ChartJS.register(
 );
 
 export default function HRVInsights() {
+  const { selectedPatientEmail } = useContext(PatientContext);
+
   const [lastThreeDates, setLastThreeDates] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedDate, setSelectedDate] = useState("");
@@ -37,11 +40,13 @@ export default function HRVInsights() {
   };
 
   useEffect(() => {
+    if (!selectedPatientEmail) return;
+
     // Fetch HRV data from the server
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/history/hrv?email=gloriazhou34@gmail.com`
+          `http://localhost:5000/history/hrv?email=${selectedPatientEmail}`
         );
 
         const data = await response.json();
@@ -69,13 +74,13 @@ export default function HRVInsights() {
     };
 
     fetchData();
-  }, []);
+  }, [selectedPatientEmail]);
 
   const handleDateChange = async (date) => {
     setSelectedDate(date);
     try {
       const response = await fetch(
-        `http://localhost:5000/history/hrv?email=gloriazhou34@gmail.com`
+        `http://localhost:5000/history/hrv?email=${selectedPatientEmail}`
       );
       const data = await response.json();
 
