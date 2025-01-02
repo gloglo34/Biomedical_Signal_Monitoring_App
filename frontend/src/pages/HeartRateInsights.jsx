@@ -82,7 +82,6 @@ export default function HeartRateInsights() {
     const fetchIntradayData = async () => {
       if (!selectedDate) return;
 
-      setLoading(true);
       try {
         const response = await fetch(
           `http://localhost:5000/history/heartrate?email=gloriazhou34@gmail.com`

@@ -47,6 +47,20 @@ export default function Insights() {
         </button>
 
         <button
+          className={activeTab === "hrv" ? "tab-active" : "tab"}
+          onClick={() => setActiveTab("hrv")}
+        >
+          Heart Rate Variability
+        </button>
+
+        <button
+          className={activeTab === "oxygen" ? "tab-active" : "tab"}
+          onClick={() => setActiveTab("oxygen")}
+        >
+          Oxygen Saturation
+        </button>
+
+        <button
           className={activeTab === "sleep" ? "tab-active" : "tab"}
           onClick={() => setActiveTab("sleep")}
         >
@@ -58,20 +72,6 @@ export default function Insights() {
           onClick={() => setActiveTab("steps")}
         >
           Steps
-        </button>
-
-        <button
-          className={activeTab === "oxygen" ? "tab-active" : "tab"}
-          onClick={() => setActiveTab("oxygen")}
-        >
-          Oxygen Level
-        </button>
-
-        <button
-          className={activeTab === "hrv" ? "tab-active" : "tab"}
-          onClick={() => setActiveTab("hrv")}
-        >
-          Heart Rate Variability
         </button>
 
         <button
