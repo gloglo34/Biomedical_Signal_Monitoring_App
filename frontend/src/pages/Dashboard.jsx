@@ -7,7 +7,7 @@ import SleepCard from "../components/cards/SleepCard";
 import SkinTempCard from "../components/cards/SkinTempCard";
 import HrvCard from "../components/cards/HrvCard";
 
-export default function Dashboard2() {
+export default function Dashboard() {
   return (
     <div className="grid-container">
       <HrCard />

@@ -34,7 +34,7 @@ export default function Login() {
           );
 
           if (authorizedPatients.length > 0) {
-            navigate("/dashboard2");
+            navigate("/dashboard");
           } else {
             navigate("/welcome");
           }

@@ -10,19 +10,19 @@ export default function Sidebar() {
   };
 
   const handleDashboard = () => {
-    navigate("/dashboard2");
+    navigate("/dashboard");
   };
 
   const handleAlerts = () => {
-    navigate("/dashboard2/alerts");
+    navigate("/dashboard/alerts");
   };
 
   const handleInsights = () => {
-    navigate("/dashboard2/insights");
+    navigate("/dashboard/insights");
   };
 
   const handlePatientProfile = () => {
-    navigate("/dashboard2/patientProfile");
+    navigate("/dashboard/patientProfile");
   };
 
   return (
@@ -45,13 +45,11 @@ export default function Sidebar() {
 
         <button className="sidebar-list-item" onClick={handleInsights}>
           <i className="material-symbols-outlined">search_insights</i>
-          {/* <Link to="/dashboard2/insights">Insights</Link> */}
           Insights
         </button>
 
         <button className="sidebar-list-item" onClick={handlePatientProfile}>
           <i className="material-symbols-outlined">person</i>
-          {/* <Link to="/dashboard2/patientProfile">Profile</Link> */}
           Profile
         </button>
 
