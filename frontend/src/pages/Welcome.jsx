@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import "../styles/LogReg.css";
 
-export default function Dashboard1() {
+export default function Welcome() {
   const sth = localStorage.getItem("email");
   const navigate = useNavigate();
 

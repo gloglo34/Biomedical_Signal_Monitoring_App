@@ -2,7 +2,7 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Dashboard1 from "./pages/Dashboard1";
+import Welcome from "./pages/Welcome";
 import PrivateRoutes from "./utils/PrivateRoutes";
 import PublicRoutes from "./utils/PublicRoutes";
 import ManagePatients from "./pages/ManagePatients";
@@ -17,7 +17,7 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<PrivateRoutes />}>
-          <Route path="/dashboard1" element={<Dashboard1 />} />
+          <Route path="/welcome" element={<Welcome />} />
           <Route path="/managePatients" element={<ManagePatients />} />
           <Route path="/dashboard2" element={<MainLayout />}>
             <Route index element={<Dashboard2 />} />

@@ -145,9 +145,9 @@ export default function ManagePatients() {
       <button
         type="button"
         className="back-to-dash"
-        onClick={() => navigate("/dashboard1")}
+        onClick={() => navigate("/welcome")}
       >
-        Back to Dashboard
+        Back to Home
       </button>
     </div>
   );

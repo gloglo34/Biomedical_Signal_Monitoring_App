@@ -3,5 +3,5 @@ import UseAuth from "./UseAuth";
 
 export default function PublicRoutes() {
   const sth = UseAuth();
-  return sth ? <Navigate to="/dashboard1" /> : <Outlet />;
+  return sth ? <Navigate to="/welcome" /> : <Outlet />;
 }
