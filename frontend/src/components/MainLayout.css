@@ -25,10 +25,37 @@
   align-items: center;
   justify-content: space-between;
   box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
-  /* background-color: #161b61; */
   background-color: #0f2573;
   color: white;
 }
+
+.header .patient-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.header .patient-actions select {
+  margin-right: 10px;
+}
+
+.header .patient-actions button {
+  /* background: none; */
+  border: none;
+  cursor: pointer;
+  color: #0f2573;
+  font-size: 2rem;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.header .patient-actions button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
 /* End Header */
 
 .sidebar {

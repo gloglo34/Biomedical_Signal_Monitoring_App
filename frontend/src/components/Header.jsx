@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { PatientContext } from "../context/PatientContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Header() {
   const [patients, setPatients] = useState([]);
@@ -8,6 +9,7 @@ export default function Header() {
     useContext(PatientContext);
   const [lastSyncTime, setLastSyncTime] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const userEmail = localStorage.getItem("email");
 
@@ -20,11 +22,18 @@ export default function Header() {
         );
 
         if (response.status === 200) {
-          setPatients(response.data);
+          //Filter out unauthorized patients
+          const authorizedPatients = response.data.filter(
+            (patient) => patient.authorizationStatus === "Authorized"
+          );
+
+          setPatients(authorizedPatients);
 
           // Automatically select the first patient in the list
-          if (response.data.length > 0) {
-            setSelectedPatientEmail(response.data[0].email);
+          if (authorizedPatients.length > 0) {
+            setSelectedPatientEmail(authorizedPatients[0].email);
+          } else {
+            setSelectedPatientEmail(null);
           }
         }
       } catch (error) {
@@ -68,9 +77,9 @@ export default function Header() {
       {error && <p style={{ color: "red" }}>{error}</p>}
 
       {patients.length > 0 ? (
-        <div>
+        <div className="patient-actions">
           <label htmlFor="patient-select">
-            <strong>Current Patient:</strong>{" "}
+            <strong>Current Patient: </strong>{" "}
           </label>
           <select
             id="patient-select"
@@ -87,6 +96,10 @@ export default function Header() {
             <strong>Last Sync Time: </strong>
             {lastSyncTime || "Loading..."}
           </p>
+
+          <button onClick={() => navigate("/addPatient")}>
+            <i className="material-symbols-outlined">group</i>
+          </button>
         </div>
       ) : (
         <p>No authorized patients yet.</p>

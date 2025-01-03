@@ -12,7 +12,7 @@ export async function saveHeartRate(email, fitbitUserId, accessToken, date) {
 
     if (response.status === 401) {
       console.log("Access token expired. Refreshing...");
-      accessToken = await refreshAccessToken(patientId);
+      accessToken = await refreshAccessToken(fitbitUserId);
       response = await fetch(heartRateUrl, {
         method: "GET",
         headers: { Authorization: `Bearer ${accessToken}` },
@@ -30,7 +30,7 @@ export async function saveHeartRate(email, fitbitUserId, accessToken, date) {
 
     await HeartRate.updateOne(
       { email, date },
-      { email, restingHeartRate, intraday },
+      { email, date, restingHeartRate, intraday },
       { upsert: true } //Create a new document if none exists
     );
 

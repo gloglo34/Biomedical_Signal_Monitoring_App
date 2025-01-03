@@ -22,13 +22,16 @@ export default function Login() {
         //Save logged in user to localstorage
         localStorage.setItem("email", email);
 
-        // //Fetch the list of authorized patients
+        //Fetch the list of patients added by the user
         const patientsResponse = await axios.get(
           `http://localhost:5000/patients?userEmail=${email}`
         );
 
         if (patientsResponse.status === 200) {
-          const authorizedPatients = patientsResponse.data;
+          //Filter authorized patients
+          const authorizedPatients = patientsResponse.data.filter(
+            (patient) => patient.authorizationStatus === "Authorized"
+          );
 
           if (authorizedPatients.length > 0) {
             navigate("/dashboard2");
