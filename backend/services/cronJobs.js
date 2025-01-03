@@ -23,35 +23,19 @@ cron.schedule("59 * * * *", async () => {
     for (const patient of authorizedPatients) {
       try {
         //Save heart rate data
-        const hrSaved = await saveHeartRate(
-          patient.email,
-          patient.fitbitUserId,
-          patient.fitbitAccessToken,
-          today
-        );
-
+        const hrSaved = await saveHeartRate(patient, today);
         if (hrSaved) {
           console.log(`Heart rate data saved for patient: ${patient.email}`);
         }
 
         // Save HRV data
-        const hrvSaved = await saveHRV(
-          patient.email,
-          patient.fitbitUserId,
-          patient.fitbitAccessToken,
-          today
-        );
+        const hrvSaved = await saveHRV(patient, today);
         if (hrSaved) {
           console.log(`HRV data saved for patient: ${patient.email}`);
         }
 
         // Save Spo2 data
-        const spo2Saved = await saveSpo2(
-          patient.email,
-          patient.fitbitUserId,
-          patient.fitbitAccessToken,
-          today
-        );
+        const spo2Saved = await saveSpo2(patient, today);
         if (spo2Saved) {
           console.log(`SpO2 data saved for patient: ${patient.email}`);
         }

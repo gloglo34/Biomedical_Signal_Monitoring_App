@@ -1,21 +1,23 @@
 import HeartRate from "../models/HeartRate.js";
 import { refreshAccessToken } from "../controllers/OAuth2Controller.js";
 
-export async function saveHeartRate(email, fitbitUserId, accessToken, date) {
-  const heartRateUrl = `https://api.fitbit.com/1/user/${fitbitUserId}/activities/heart/date/${date}/1d/5min.json`;
+export async function saveHeartRate(patient, date) {
+  const heartRateUrl = `https://api.fitbit.com/1/user/${patient.fitbitUserId}/activities/heart/date/${date}/1d/5min.json`;
 
   try {
+    const accessToken = patient.fitbitAccessToken;
+
     let response = await fetch(heartRateUrl, {
       method: "GET",
       headers: { Authorization: `Bearer ${accessToken}` },
     });
 
     if (response.status === 401) {
-      console.log("Access token expired. Refreshing...");
-      accessToken = await refreshAccessToken(fitbitUserId);
+      console.log(`Access token expired for ${patient.email}. Refreshing...`);
+      const newAccessToken = await refreshAccessToken(patient);
       response = await fetch(heartRateUrl, {
         method: "GET",
-        headers: { Authorization: `Bearer ${accessToken}` },
+        headers: { Authorization: `Bearer ${newAccessToken}` },
       });
     }
 
@@ -29,15 +31,17 @@ export async function saveHeartRate(email, fitbitUserId, accessToken, date) {
     const intraday = data["activities-heart-intraday"]?.dataset || [];
 
     await HeartRate.updateOne(
-      { email, date },
-      { email, date, restingHeartRate, intraday },
+      { email: patient.email, date },
+      { email: patient.email, date, restingHeartRate, intraday },
       { upsert: true } //Create a new document if none exists
     );
 
-    console.log(`Heart rate data saved for patient ${fitbitUserId} on ${date}`);
+    console.log(
+      `Heart rate data saved for patient ${patient.email} on ${date}`
+    );
   } catch (error) {
     console.error(
-      `Error saving heart rate data for ${email} on ${date}:`,
+      `Error saving heart rate data for ${patient.email} on ${date}:`,
       error
     );
   }

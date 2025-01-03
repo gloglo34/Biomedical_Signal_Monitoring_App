@@ -124,3 +124,12 @@
   margin-top: auto;
   margin-bottom: 10px;
 }
+
+#patient-select {
+  padding: 5px; /* Add padding for better spacing */
+  border: 2px solid #0f2573; /* Border color to match your theme */
+  border-radius: 10px; /* Rounded corners */
+  background-color: white; /* Background color */
+  font-size: 14px; /* Font size */
+  color: #0f2573; /* Text color */
+}
