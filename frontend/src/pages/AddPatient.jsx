@@ -70,7 +70,7 @@ export default function ManagePatients() {
   };
 
   return (
-    <div>
+    <div className="manage-patients">
       <h1>Manage Patients</h1>
 
       {/* Error or success messages */}
@@ -78,48 +78,50 @@ export default function ManagePatients() {
       {message && <p style={{ color: "green" }}>{message}</p>}
 
       {/* Patients Table */}
-      <table
-        border="1"
-        style={{ width: "100%", textAlign: "left", marginTop: "20px" }}
-      >
-        <thead>
-          <tr>
-            <th>Email</th>
-            <th>Authorization Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {patients.length > 0 ? (
-            patients.map((patient) => (
-              <tr key={patient.email}>
-                <td>{patient.email}</td>
-                <td>{patient.authorizationStatus}</td>
-                <td>
-                  <button
-                    style={{ color: "red" }}
-                    onClick={() => handleDeletePatient(patient.email)}
-                  >
-                    🗑️
-                  </button>
-                </td>
-              </tr>
-            ))
-          ) : (
+      <div className="patients-table-container">
+        <table className="patients-table">
+          <thead>
             <tr>
-              <td colSpan="3">No patients added yet.</td>
+              <th>Email</th>
+              <th>Authorization Status</th>
+              <th></th>
             </tr>
-          )}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {patients.length > 0 ? (
+              patients.map((patient) => (
+                <tr key={patient.email}>
+                  <td>{patient.email}</td>
+                  <td>{patient.authorizationStatus}</td>
+                  <td>
+                    <button
+                      className="delete-btn"
+                      onClick={() => handleDeletePatient(patient.email)}
+                    >
+                      <i className="material-symbols-outlined">delete</i>
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="3">No patients added yet.</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
 
       {/* Add Patient Section */}
-      <button onClick={() => setIsAddPatientVisible(!isAddPatientVisible)}>
+      <button
+        className="toggle-add-patient-btn"
+        onClick={() => setIsAddPatientVisible(!isAddPatientVisible)}
+      >
         {isAddPatientVisible ? "− Hide Add Patient Form" : "+ Add Patient"}
       </button>
 
       {isAddPatientVisible && (
-        <div>
+        <div className="add-patient-form">
           <h2>Add a new patient</h2>
           <form onSubmit={handleSubmit}>
             <input
@@ -140,7 +142,11 @@ export default function ManagePatients() {
       )}
 
       {/* Back to Dashboard */}
-      <button type="button" onClick={() => navigate("/dashboard1")}>
+      <button
+        type="button"
+        className="back-to-dash"
+        onClick={() => navigate("/dashboard1")}
+      >
         Back to Dashboard
       </button>
     </div>
