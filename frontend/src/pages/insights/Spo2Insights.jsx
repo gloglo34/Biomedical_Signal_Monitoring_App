@@ -25,7 +25,8 @@ export default function SpO2Insights() {
 
   const [selectedDate, setSelectedDate] = useState("");
   const [intradayData, setIntradayData] = useState([]);
-  const [lastThreeDates, setLastThreeDates] = useState(generateLastThreeDates);
+  const [lastThreeDates, setLastThreeDates] = useState([]);
+  const [loading, setLoading] = useState([]);
 
   // Generate the last 3 dates dynamically
   function generateLastThreeDates() {
@@ -51,8 +52,10 @@ export default function SpO2Insights() {
 
         const entry = data.spo2.find((item) => item.date === selectedDate);
         setIntradayData(entry ? entry.minutes : []);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching SpO2 intraday data:", error);
+        setLoading(false);
       }
     };
 
@@ -81,6 +84,10 @@ export default function SpO2Insights() {
       },
     ],
   };
+
+  if (loading) {
+    return <p>Loading data...</p>;
+  }
 
   return (
     <div className="spo2-insights-container">
