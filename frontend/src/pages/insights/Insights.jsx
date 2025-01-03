@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./Insights.css";
+import "../../styles/Insights.css";
 import HeartRateInsights from "./HeartRateInsights";
 import SleepInsights from "./SleepInsights";
 import Spo2Insights from "./Spo2Insights";

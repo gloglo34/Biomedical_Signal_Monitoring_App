@@ -1,6 +1,5 @@
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import "./MainLayout.css";
+import "../styles/MainLayout.css";
 
 export default function Sidebar() {
   const navigate = useNavigate();

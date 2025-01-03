@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { PatientContext } from "../context/PatientContext";
-import "./Alerts.css";
+import "../styles/Alerts.css";
 
 export default function Alerts() {
   const { selectedPatientEmail } = useContext(PatientContext);

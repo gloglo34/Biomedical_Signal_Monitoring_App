@@ -97,7 +97,7 @@ export default function Header() {
             {lastSyncTime || "Loading..."}
           </p>
 
-          <button onClick={() => navigate("/addPatient")}>
+          <button onClick={() => navigate("/managePatients")}>
             <i className="material-symbols-outlined">group</i>
           </button>
         </div>

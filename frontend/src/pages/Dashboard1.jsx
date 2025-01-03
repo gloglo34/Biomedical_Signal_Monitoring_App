@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import "./LogReg.css";
+import "../styles/LogReg.css";
 
 export default function Dashboard1() {
   const sth = localStorage.getItem("email");
@@ -12,7 +12,7 @@ export default function Dashboard1() {
   };
 
   const handleAddPatient = () => {
-    navigate("/addPatient");
+    navigate("/managePatients");
   };
   return (
     <div className="home-container">

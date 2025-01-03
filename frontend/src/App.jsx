@@ -5,11 +5,11 @@ import Register from "./pages/Register";
 import Dashboard1 from "./pages/Dashboard1";
 import PrivateRoutes from "./utils/PrivateRoutes";
 import PublicRoutes from "./utils/PublicRoutes";
-import AddPatient from "./pages/AddPatient";
+import ManagePatients from "./pages/ManagePatients";
 import Dashboard2 from "./pages/Dashboard2";
 import MainLayout from "./components/MainLayout";
 import Alerts from "./pages/Alerts";
-import Insights from "./pages/Insights";
+import Insights from "./pages/insights/Insights";
 import PatientProfile from "./pages/PatientProfile";
 
 export default function App() {
@@ -18,7 +18,7 @@ export default function App() {
       <Routes>
         <Route element={<PrivateRoutes />}>
           <Route path="/dashboard1" element={<Dashboard1 />} />
-          <Route path="/addPatient" element={<AddPatient />} />
+          <Route path="/managePatients" element={<ManagePatients />} />
           <Route path="/dashboard2" element={<MainLayout />}>
             <Route index element={<Dashboard2 />} />
             <Route path="alerts" element={<Alerts />} />

@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
-import { PatientContext } from "../context/PatientContext";
-import "./Insights.css";
+import { PatientContext } from "../../context/PatientContext";
+import "../../styles/Insights.css";
 import { Line } from "react-chartjs-2";
 
 import {
