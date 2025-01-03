@@ -69,6 +69,21 @@ export default function ManagePatients() {
     }
   };
 
+  //Handle navigating to dashboard
+  const handleNavigateToDashboard = () => {
+    const authorizedPatients = patients.filter(
+      (patient) => patient.authorizationStatus === "Authorized"
+    );
+
+    if (authorizedPatients.length === 0) {
+      setMessage(
+        "You must have at least one authorized patient to start monitoring."
+      );
+      return;
+    }
+    navigate("/dashboard");
+  };
+
   return (
     <div className="manage-patients">
       <h1>Manage Patients</h1>
@@ -76,6 +91,8 @@ export default function ManagePatients() {
       {/* Error or success messages */}
       {error && <p style={{ color: "red" }}>{error}</p>}
       {message && <p style={{ color: "green" }}>{message}</p>}
+
+      <button onClick={handleNavigateToDashboard}>Start Monitoring</button>
 
       {/* Patients Table */}
       <div className="patients-table-container">
