@@ -53,17 +53,19 @@ export default function SleepCard() {
           return;
         }
 
-        const data = res.sleep[0]?.levels?.data;
+        const mainSleepRecord = res.sleep.find((record) => record.isMainSleep);
+
+        const data = mainSleepRecord?.levels?.data;
         const levels = data.map((item) => {
           switch (item.level) {
             case "wake":
-              return 0;
-            case "light":
-              return 1;
-            case "rem":
-              return 2;
-            case "deep":
               return 3;
+            case "light":
+              return 2;
+            case "rem":
+              return 1;
+            case "deep":
+              return 0;
             default:
               return null;
           }

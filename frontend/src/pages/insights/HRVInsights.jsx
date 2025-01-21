@@ -109,7 +109,7 @@ export default function HRVInsights() {
         borderColor: "rgb(228, 145, 67)",
         backgroundColor: "rgba(75, 192, 192, 0.2)",
         fill: false,
-        tension: 0.2,
+        tension: 0.4,
       },
     ],
   };

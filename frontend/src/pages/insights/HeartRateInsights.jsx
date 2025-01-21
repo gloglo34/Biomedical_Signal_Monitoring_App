@@ -29,7 +29,7 @@ export default function HeartRateInsights() {
   const [intradayData, setIntradayData] = useState([]);
   const [lastThreeDates, setLastThreeDates] = useState([]);
 
-  //Generate the last 3 dates dynamically
+  //Generating the last 3 dates dynamically
   const generateLastThreeDates = () => {
     const dates = [];
     for (let i = 0; i < 3; i++) {
@@ -43,7 +43,7 @@ export default function HeartRateInsights() {
   useEffect(() => {
     if (!selectedPatientEmail) return;
 
-    //Fetch data from history endpoint (database)
+    //Fetching data from history endpoint (database)
     const fetchData = async () => {
       try {
         const response = await fetch(
