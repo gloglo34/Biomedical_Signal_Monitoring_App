@@ -41,7 +41,7 @@ export default function StepsCard() {
 
       try {
         const response = await fetch(
-          `http://localhost:5000/fitbitData/steps?email=${selectedPatientEmail}`
+          `https://localhost:443/fitbitData/steps?email=${selectedPatientEmail}`
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");

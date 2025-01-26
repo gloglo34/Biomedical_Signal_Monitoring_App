@@ -48,7 +48,7 @@ export default function HrCard() {
 
       try {
         const response = await fetch(
-          `http://localhost:5000/fitbitData/heartrate?email=${selectedPatientEmail}`
+          `https://localhost:443/fitbitData/heartrate?email=${selectedPatientEmail}`
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -75,6 +75,8 @@ export default function HrCard() {
       }
     };
     fetchHeartRateData();
+    const interval = setInterval(fetchHeartRateData, 300000); // 5 minute
+    return () => clearInterval(interval); // Cleanup on unmount
   }, [selectedPatientEmail]);
 
   return (

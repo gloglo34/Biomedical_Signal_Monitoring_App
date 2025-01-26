@@ -18,7 +18,7 @@ export default function Header() {
     const fetchPatients = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/patients?userEmail=${userEmail}`
+          `https://localhost:443/patients?userEmail=${userEmail}`
         );
 
         if (response.status === 200) {
@@ -52,7 +52,7 @@ export default function Header() {
 
       try {
         const response = await axios.get(
-          `http://localhost:5000/fitbitData/devices?email=${selectedPatientEmail}`
+          `https://localhost:443/fitbitData/devices?email=${selectedPatientEmail}`
         );
 
         if (response.status === 200 && response.data.length > 0) {

@@ -36,11 +36,20 @@ router.get("/callback", async (req, res) => {
 
     await patient.save();
 
-    // res.send("<h1>Thank you</h1>");
-    res.status(200).json({
-      message: "Authorization successful and patient data updated!",
-      patient,
-    });
+    res.send(`
+      <div style="text-align: center; margin-top: 50px; font-family: Arial, sans-serif;">
+        <h1 style="color: green;">Thank You!</h1>
+        <p style="font-size: 1.2em;">
+          Your authorization was successful. Your caregiver can now access your health data for monitoring purposes.
+        </p>
+        <p>You may safely close this tab.</p>
+      </div>
+    `);
+
+    // res.status(200).json({
+    //   message: "Authorization successful and patient data updated!",
+    //   patient,
+    // });
   } catch (error) {
     console.error("Error exchanging authrization code:", error.message);
     res.status(500).send("<h1>Error</h1>");

@@ -14,7 +14,7 @@ export default function Alerts() {
     const fetchAlerts = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/alerts?email=${selectedPatientEmail}`
+          `https://localhost:443/alerts?email=${selectedPatientEmail}`
         );
 
         if (!response.ok) {
@@ -34,7 +34,7 @@ export default function Alerts() {
 
   const markAsRead = async (id) => {
     try {
-      await fetch(`http://localhost:5000/alerts/${id}`, {
+      await fetch(`https://localhost:443/alerts/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ read: true }),

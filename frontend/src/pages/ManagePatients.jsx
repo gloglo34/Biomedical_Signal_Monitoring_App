@@ -17,7 +17,7 @@ export default function ManagePatients() {
     const fetchPatients = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/patients?userEmail=${userEmail}`
+          `https://localhost:443/patients?userEmail=${userEmail}`
         );
         if (response.status === 200) {
           setPatients(response.data);
@@ -34,7 +34,7 @@ export default function ManagePatients() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/email/send", {
+      const response = await axios.post("https://localhost:443/email/send", {
         receivingEmail: email,
         userEmail,
       });
@@ -44,7 +44,7 @@ export default function ManagePatients() {
 
         // Refresh the patient list
         const updatedPatients = await axios.get(
-          `http://localhost:5000/patients?userEmail=${userEmail}`
+          `https://localhost:443/patients?userEmail=${userEmail}`
         );
         setPatients(updatedPatients.data);
       }
@@ -56,7 +56,7 @@ export default function ManagePatients() {
   // Handle deleting a patient
   const handleDeletePatient = async (patientEmail) => {
     try {
-      await axios.delete(`http://localhost:5000/patients`, {
+      await axios.delete(`https://localhost:443/patients`, {
         data: { email: patientEmail, userEmail },
       });
 

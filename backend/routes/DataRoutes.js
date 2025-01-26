@@ -209,7 +209,7 @@ router.get("/heartrate", async (req, res) => {
           await newAlert.save();
           console.log("New abnormal heart rate alert saved.");
         } else {
-          console.log("Duplicate alert detected. Skipping.");
+          // console.log("Duplicate alert detected. Skipping.");
         }
       }
     }

@@ -29,7 +29,7 @@ export default function SleepCard() {
 
       try {
         const response = await fetch(
-          `http://localhost:5000/fitbitData/sleep?email=${selectedPatientEmail}`
+          `https://localhost:443/fitbitData/sleep?email=${selectedPatientEmail}`
         );
 
         if (!response.ok) {

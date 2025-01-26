@@ -12,7 +12,7 @@ export const exchangeAuthorizationCode = async (code, patientEmail) => {
       "https://api.fitbit.com/oauth2/token",
       qs.stringify({
         grant_type: "authorization_code",
-        redirect_uri: "http://localhost:5000/oauth2/callback",
+        redirect_uri: "https://localhost:443/oauth2/callback",
         code,
       }),
       {

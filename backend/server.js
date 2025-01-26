@@ -10,10 +10,18 @@ import DataRoutes from "./routes/DataRoutes.js";
 import AlertRoutes from "./routes/AlertRoutes.js";
 import "./services/cronJobs.js";
 import HistoryRoutes from "./routes/HistoryRoutes.js";
+import https from "https";
+import fs from "fs";
 
 dotenv.config();
 
 const app = express();
+
+//Load SSL certificate and private key
+const sslOptions = {
+  key: fs.readFileSync("./certs/server.key"),
+  cert: fs.readFileSync("./certs/server.crt"),
+};
 
 // Middleware
 app.use(cors());
@@ -25,7 +33,7 @@ mongoose
   .catch((err) => console.error("MongoDB connection error:", err));
 
 app.get("/", (req, res) => {
-  res.send("<h1>Welcome to the backend</h1>");
+  res.send("<h1>Welcome to the backend. HTTPS is working!</h1> ");
 });
 
 app.get("/callback", (req, res) => {
@@ -47,7 +55,13 @@ app.use("/history", HistoryRoutes);
 
 app.use("/", AlertRoutes);
 
-const PORT = 5000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port http://localhost:${PORT}`);
+// const PORT = 5000;
+// app.listen(PORT, () => {
+//   console.log(`Server is running on port http://localhost:${PORT}`);
+// });
+
+//Start the https server
+const PORT = 443;
+https.createServer(sslOptions, app).listen(PORT, () => {
+  console.log(`Server running on https://localhost:${PORT}`);
 });

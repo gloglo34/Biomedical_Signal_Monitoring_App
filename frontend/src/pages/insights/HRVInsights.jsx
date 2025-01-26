@@ -46,7 +46,7 @@ export default function HRVInsights() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/history/hrv?email=${selectedPatientEmail}`
+          `https://localhost:443/history/hrv?email=${selectedPatientEmail}`
         );
 
         const data = await response.json();
@@ -80,7 +80,7 @@ export default function HRVInsights() {
     setSelectedDate(date);
     try {
       const response = await fetch(
-        `http://localhost:5000/history/hrv?email=${selectedPatientEmail}`
+        `https://localhost:443/history/hrv?email=${selectedPatientEmail}`
       );
       const data = await response.json();
 

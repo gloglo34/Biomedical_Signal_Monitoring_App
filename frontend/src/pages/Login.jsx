@@ -13,7 +13,7 @@ export default function Login() {
     e.preventDefault();
     try {
       //Log in the user
-      const response = await axios.post("http://localhost:5000/auth/login", {
+      const response = await axios.post("https://localhost:443/auth/login", {
         email,
         password,
       });
@@ -24,7 +24,7 @@ export default function Login() {
 
         //Fetch the list of patients added by the user
         const patientsResponse = await axios.get(
-          `http://localhost:5000/patients?userEmail=${email}`
+          `https://localhost:443/patients?userEmail=${email}`
         );
 
         if (patientsResponse.status === 200) {

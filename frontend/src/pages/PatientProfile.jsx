@@ -19,7 +19,7 @@ export default function PatientProfile() {
     const fetchPatientProfileData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/fitbitData/profile?email=${selectedPatientEmail}`
+          `https://localhost:443/fitbitData/profile?email=${selectedPatientEmail}`
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");

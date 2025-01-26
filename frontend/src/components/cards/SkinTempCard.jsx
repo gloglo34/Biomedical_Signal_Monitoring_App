@@ -1,13 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { PatientContext } from "../../context/PatientContext";
 
 export default function SkinTempCard() {
   const [skinTemp, setSkinTemp] = useState(null);
+  const { selectedPatientEmail } = useContext(PatientContext);
 
   useEffect(() => {
     const fetchSkinTempData = async () => {
+      if (!selectedPatientEmail) return;
+
       try {
         const response = await fetch(
-          `http://localhost:5000/fitbitData/skinTemp?email=gloriazhou34@gmail.com`
+          `https://localhost:443/fitbitData/skinTemp?email=${selectedPatientEmail}`
         );
 
         const res = await response.json();
@@ -18,7 +22,7 @@ export default function SkinTempCard() {
       }
     };
     fetchSkinTempData();
-  }, []);
+  }, [selectedPatientEmail]);
 
   return (
     <div className="skinTemp-card">

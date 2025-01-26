@@ -48,7 +48,7 @@ export default function Spo2Card() {
 
       try {
         const response = await fetch(
-          `http://localhost:5000/fitbitData/spo2?email=${selectedPatientEmail}`
+          `https://localhost:443/fitbitData/spo2?email=${selectedPatientEmail}`
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");

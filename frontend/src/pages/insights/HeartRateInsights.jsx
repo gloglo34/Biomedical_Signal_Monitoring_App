@@ -47,7 +47,7 @@ export default function HeartRateInsights() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/history/heartrate?email=${selectedPatientEmail}`
+          `https://localhost:443/history/heartrate?email=${selectedPatientEmail}`
         );
 
         const data = await response.json();
@@ -86,7 +86,7 @@ export default function HeartRateInsights() {
     const fetchIntradayData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/history/heartrate?email=${selectedPatientEmail}`
+          `https://localhost:443/history/heartrate?email=${selectedPatientEmail}`
         );
         const data = await response.json();
 

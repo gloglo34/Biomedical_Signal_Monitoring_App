@@ -48,7 +48,7 @@ export default function BrCard() {
 
       try {
         const response = await fetch(
-          `http://localhost:5000/fitbitData/br?email=${selectedPatientEmail}`
+          `https://localhost:443/fitbitData/br?email=${selectedPatientEmail}`
         );
 
         if (!response.ok) {

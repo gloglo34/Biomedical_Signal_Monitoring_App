@@ -28,7 +28,7 @@ export const sendEmail = async (req, res) => {
 
       // Generate email content for new patient
       const redirect_uri = encodeURIComponent(
-        `http://localhost:5000/oauth2/callback`
+        `https://localhost:443/oauth2/callback`
       );
 
       const fitbitAuthURL = `https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=${process.env.CLIENT_ID}&redirect_uri=${redirect_uri}&scope=activity+cardio_fitness+electrocardiogram+heartrate+irregular_rhythm_notifications+location+nutrition+oxygen_saturation+profile+respiratory_rate+settings+sleep+social+temperature+weight&state=${patientId}`;

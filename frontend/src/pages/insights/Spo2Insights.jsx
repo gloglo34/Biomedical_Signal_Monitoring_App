@@ -46,7 +46,7 @@ export default function SpO2Insights() {
     const fetchIntradayData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/history/spo2?email=${selectedPatientEmail}`
+          `https://localhost:443/history/spo2?email=${selectedPatientEmail}`
         );
         const data = await response.json();
 
