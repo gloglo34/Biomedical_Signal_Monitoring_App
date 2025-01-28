@@ -5,7 +5,7 @@ import { saveHRV } from "./hrvService.js";
 import { saveSpo2 } from "./Spo2Service.js";
 
 cron.schedule("59 * * * *", async () => {
-  console.log("Running hourly heart rate sync...");
+  console.log("Running hourly syncing of health metrics...");
 
   try {
     //Fetch only authorized patients
