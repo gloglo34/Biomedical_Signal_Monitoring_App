@@ -1,6 +1,8 @@
-import { useEffect, useState, useContext } from "react";
+import { useContext } from "react";
 import { PatientContext } from "../../context/PatientContext";
+import { usePatientData } from "../../hooks/usePatientData";
 import { Line } from "react-chartjs-2";
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -20,15 +22,34 @@ ChartJS.register(
 
 export default function HrCard() {
   const { selectedPatientEmail } = useContext(PatientContext);
-  const [chartData, setChartData] = useState({
-    labels: [],
+  const {
+    data: patientData,
+    isLoading,
+    error,
+  } = usePatientData(selectedPatientEmail);
+
+  //Process heart rate data for the chart
+  const heartRateData =
+    patientData?.heartrate["activities-heart-intraday"].dataset || [];
+  const times = heartRateData.map((item) => item.time);
+  const values = heartRateData.map((item) => item.value);
+
+  const restingHeartRate =
+    patientData?.heartrate?.["activities-heart"]?.[0]?.value
+      ?.restingHeartRate || "N/A";
+
+  const chartData = {
+    labels: times,
     datasets: [
       {
-        label: "Heart Rate",
-        data: [],
+        label: "Heart Rate (bpm)",
+        data: values,
+        tension: 0.3,
+        borderColor: "rgba(137, 196, 244)",
+        fill: false,
       },
     ],
-  });
+  };
 
   const options = {
     responsive: true,
@@ -42,42 +63,23 @@ export default function HrCard() {
     },
   };
 
-  useEffect(() => {
-    const fetchHeartRateData = async () => {
-      if (!selectedPatientEmail) return;
+  if (isLoading) {
+    return (
+      <div className="hr-card">
+        <h4>Heart Rate</h4>
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
-      try {
-        const response = await fetch(
-          `https://localhost:443/fitbitData/heartrate?email=${selectedPatientEmail}`
-        );
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-
-        const res = await response.json();
-        const data = res["activities-heart-intraday"].dataset;
-        const times = data.map((item) => item.time);
-        const values = data.map((item) => item.value);
-
-        setChartData({
-          labels: times,
-          datasets: [
-            {
-              label: "Heart Rate",
-              data: values,
-              tension: 0.3,
-              borderColor: "rgba(137, 196, 244)",
-            },
-          ],
-        });
-      } catch (error) {
-        console.error("There was a problem with the fetch operation:", error);
-      }
-    };
-    fetchHeartRateData();
-    const interval = setInterval(fetchHeartRateData, 300000); // 5 minute
-    return () => clearInterval(interval); // Cleanup on unmount
-  }, [selectedPatientEmail]);
+  if (error) {
+    return (
+      <div className="hr-card">
+        <h4>Heart Rate</h4>
+        <p>Error loading data: {error.message}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="hr-card">
@@ -86,7 +88,12 @@ export default function HrCard() {
         <i className="material-symbols-outlined">monitor_heart</i>
       </span>
       <div className="card-content">
-        <Line data={chartData} options={options} height={300} width={400} />
+        <p>Resting heart rate : {restingHeartRate}</p>
+        {heartRateData.length > 0 ? (
+          <Line data={chartData} options={options} height={300} width={400} />
+        ) : (
+          <p>No heart rate data available.</p>
+        )}
       </div>
     </div>
   );

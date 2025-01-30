@@ -108,9 +108,23 @@ export default function SpO2Insights() {
         <Line data={intradaySpO2ChartData} />
       </div>
       <div className="info-container">
+        <strong>What is oxygen saturation (SpO2)?</strong>
         <p>
-          This graph shows the intraday SpO2 data for the selected date. Use the
-          dropdown to view minute-by-minute data for the last three days.
+          Blood oxygen saturation estimates the amount of oxygen in the blood.
+          Nighttime Spo2 is usually lower than daytime Spo2 due to the fact that
+          breathing rate is usually lower during sleep.
+        </p>
+        <strong>Graph contents</strong>
+        <p>
+          In the graph ,the HRV measurements are from the longest sleep of that
+          particular day. Only sleep periods greater than 3 hours are
+          considered.
+        </p>
+        <strong>Why it matters</strong>
+        <p>
+          Studies show that a higher HRV is linked with better health. A
+          significant drop in HRV may indicate stress or strain in the body or
+          potential signs of illness.
         </p>
       </div>
     </div>

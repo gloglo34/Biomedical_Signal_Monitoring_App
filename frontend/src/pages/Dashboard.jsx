@@ -12,8 +12,8 @@ export default function Dashboard() {
     <div className="grid-container">
       <HrCard />
       <StepsCard />
-      <HrvCard />
       <BrCard />
+      <HrvCard />
       <Spo2Card />
       <SleepCard />
       <SkinTempCard />

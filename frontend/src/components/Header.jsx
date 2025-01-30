@@ -1,14 +1,18 @@
-import { useState, useEffect, useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { PatientContext } from "../context/PatientContext";
+import { usePatientData } from "../hooks/usePatientData";
 import { useNavigate } from "react-router-dom";
 
 export default function Header() {
   const [patients, setPatients] = useState([]);
   const { selectedPatientEmail, setSelectedPatientEmail } =
     useContext(PatientContext);
-  const [lastSyncTime, setLastSyncTime] = useState("");
-  const [error, setError] = useState("");
+  const {
+    data: patientData,
+    isLoading,
+    error: fetchError,
+  } = usePatientData(selectedPatientEmail);
   const navigate = useNavigate();
 
   const userEmail = localStorage.getItem("email");
@@ -22,7 +26,7 @@ export default function Header() {
         );
 
         if (response.status === 200) {
-          //Filter out unauthorized patients
+          // Filter out unauthorized patients
           const authorizedPatients = response.data.filter(
             (patient) => patient.authorizationStatus === "Authorized"
           );
@@ -37,44 +41,23 @@ export default function Header() {
           }
         }
       } catch (error) {
-        setError("Failed to fetch patients");
-        console.error(error);
+        console.error("Failed to fetch patients:", error);
       }
     };
 
     fetchPatients();
-  }, [userEmail]);
+  }, [userEmail, setSelectedPatientEmail]);
 
-  useEffect(() => {
-    // Fetch last sync time for the selected patient
-    const fetchLastSyncTime = async () => {
-      if (!selectedPatientEmail) return;
-
-      try {
-        const response = await axios.get(
-          `https://localhost:443/fitbitData/devices?email=${selectedPatientEmail}`
-        );
-
-        if (response.status === 200 && response.data.length > 0) {
-          const lastSyncTime = new Date(response.data[0]?.lastSyncTime);
-          setLastSyncTime(lastSyncTime.toLocaleString() || "No data available");
-        } else {
-          setLastSyncTime("No devices found");
-        }
-      } catch (error) {
-        setError("Failed to fetch last sync time");
-        console.error(error);
-      }
-    };
-
-    fetchLastSyncTime();
-  }, [selectedPatientEmail]);
+  // Extract lastSyncTime from the custom hook's patientData
+  const lastSyncTime = patientData?.devices?.[0]?.lastSyncTime
+    ? new Date(patientData.devices[0].lastSyncTime).toLocaleString()
+    : "No data available";
 
   return (
     <header className="header">
       <h2>Welcome {userEmail}</h2>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {fetchError && <p style={{ color: "red" }}>{fetchError.message}</p>}
 
       {patients.length > 0 ? (
         <div className="patient-actions">
@@ -83,7 +66,7 @@ export default function Header() {
           </label>
           <select
             id="patient-select"
-            value={selectedPatientEmail}
+            value={selectedPatientEmail || ""}
             onChange={(e) => setSelectedPatientEmail(e.target.value)}
           >
             {patients.map((patient) => (
@@ -94,7 +77,7 @@ export default function Header() {
           </select>
           <p>
             <strong>Last Sync Time: </strong>
-            {lastSyncTime || "Loading..."}
+            {isLoading ? "Loading..." : lastSyncTime}
           </p>
 
           <button onClick={() => navigate("/managePatients")}>

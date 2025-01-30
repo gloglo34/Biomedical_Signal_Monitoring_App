@@ -34,6 +34,7 @@ router.get("/heartrate", async (req, res) => {
         intraday: record.intraday,
       })),
     };
+    console.log("Retriveing hr data from db");
 
     res.json(response);
   } catch (error) {

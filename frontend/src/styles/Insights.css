@@ -43,7 +43,7 @@
 
 .graph-container,
 .info-container {
-  min-width: 300px;
+  min-width: 48%;
 }
 
 .info-container {
@@ -52,4 +52,14 @@
   border: 1px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.spo2-insights-container,
+.hrv-insights-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px; /* Adds spacing between the graph and info containers */
+  padding: 20px; /* Adds some padding around the container */
 }

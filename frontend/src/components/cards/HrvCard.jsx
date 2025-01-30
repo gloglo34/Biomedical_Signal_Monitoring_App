@@ -1,5 +1,6 @@
-import { useEffect, useState, useContext } from "react";
+import { useContext } from "react";
 import { PatientContext } from "../../context/PatientContext";
+import { usePatientData } from "../../hooks/usePatientData";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -20,15 +21,30 @@ ChartJS.register(
 
 export default function HrvCard() {
   const { selectedPatientEmail } = useContext(PatientContext);
-  const [hrvChartData, setHrvChartData] = useState({
-    labels: [],
+  const {
+    data: patientData,
+    isLoading,
+    error,
+  } = usePatientData(selectedPatientEmail);
+
+  // Process HRV data for the chart
+  const hrvData = patientData?.hrv?.hrv?.[0]?.minutes || [];
+  const times = hrvData.map((item) =>
+    new Date(item.minute).toLocaleTimeString()
+  );
+  const rmssdValues = hrvData.map((item) => item.value.rmssd);
+
+  const chartData = {
+    labels: times,
     datasets: [
       {
         label: "HRV",
-        data: [],
+        data: rmssdValues,
+        borderColor: "rgba(137, 196, 244)",
+        tension: 0.3,
       },
     ],
-  });
+  };
 
   const options = {
     responsive: true,
@@ -42,58 +58,23 @@ export default function HrvCard() {
     },
   };
 
-  useEffect(() => {
-    const fetchHrvData = async () => {
-      if (!selectedPatientEmail) return;
+  if (isLoading) {
+    return (
+      <div className="hrv-card">
+        <h4>HRV</h4>
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
-      try {
-        const response = await fetch(
-          `https://localhost:443/fitbitData/hrv?email=${selectedPatientEmail}`
-        );
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-
-        const res = await response.json();
-
-        //Check if HRV data is available
-        if (!res.hrv || res.hrv.lenght === 0) {
-          console.warn("No HRV data available for selected patient.");
-          setHrvChartData({
-            labels: [],
-            datasets: [
-              {
-                label: "HRV",
-                data: [],
-              },
-            ],
-          });
-          return;
-        }
-
-        const data = res.hrv[0]?.minutes || [];
-        const times = data.map((item) =>
-          new Date(item.minute).toLocaleTimeString()
-        );
-        const rmssdValues = data.map((item) => item.value.rmssd);
-
-        setHrvChartData({
-          labels: times,
-          datasets: [
-            {
-              label: "HRV",
-              data: rmssdValues,
-              borderColor: "rgba(137, 196, 244)",
-              tension: 0.3,
-            },
-          ],
-        });
-      } catch (error) {
-        console.error("There was a problem with the fetch operation: ", error);
-      }
-    };
-    fetchHrvData();
-  }, [selectedPatientEmail]);
+  if (error) {
+    return (
+      <div className="hrv-card">
+        <h4>HRV</h4>
+        <p>Error loading data: {error.message}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="hrv-card">
@@ -102,7 +83,11 @@ export default function HrvCard() {
         <i className="material-symbols-outlined">show_chart</i>
       </span>
       <div className="card-content">
-        <Line data={hrvChartData} options={options} height={300} width={400} />
+        {hrvData.length > 0 ? (
+          <Line data={chartData} options={options} height={300} width={400} />
+        ) : (
+          <p>No HRV data available.</p>
+        )}
       </div>
     </div>
   );

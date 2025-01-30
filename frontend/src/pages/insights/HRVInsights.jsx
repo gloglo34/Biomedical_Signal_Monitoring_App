@@ -156,13 +156,26 @@ export default function HRVInsights() {
       </div>
 
       <div className="info-container">
+        <strong>What is heart rate variability?</strong>
         <p>
-          HRV is the variation in the time between heartbeats. Even if your
-          patient's heart rate is 60 beats per minute, it doesn’t mean their
-          heart beats once a second. The autonomic nervous system determines the
-          timing of each heartbeat. The RMSSD metric is used to calculate HRV.
-          The latest HRV measurements come from the longest sleep periods, and
-          history data is available for the last 3 days.
+          HRV is the variation in time between heartbeats. The autonomic nervous
+          system (ANS) determines the timing of each heartbeat. A common formula
+          called RMSSD is used to determine HRV from heartrate data. HRV varies
+          from person to person. Gender,sleep,hormones, circadian rhythm and
+          lifestyle choices (e.g. caffeine,alcohol intake,exercise,stress) can
+          all affect HRV.
+        </p>
+        <strong>Graph contents</strong>
+        <p>
+          In the graph ,the HRV measurements are from the longest sleep of that
+          particular day. Only sleep periods greater than 3 hours are
+          considered.
+        </p>
+        <strong>Why it matters</strong>
+        <p>
+          Studies show that a higher HRV is linked with better health. A
+          significant drop in HRV may indicate stress or strain in the body or
+          potential signs of illness.
         </p>
       </div>
     </div>

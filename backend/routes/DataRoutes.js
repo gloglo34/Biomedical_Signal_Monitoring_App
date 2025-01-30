@@ -4,7 +4,7 @@ import { refreshAccessToken } from "../controllers/OAuth2Controller.js";
 import NodeCache from "node-cache";
 import Alert from "../models/Alert.js";
 
-const myCache = new NodeCache({ stdTTL: 900 });
+const myCache = new NodeCache({ stdTTL: 300 });
 
 const router = express.Router();
 
@@ -182,7 +182,7 @@ router.get("/heartrate", async (req, res) => {
 
     //3) Apply threshold logic
     const NORMAL_LOW = 55;
-    const NORMAL_HIGH = 100;
+    const NORMAL_HIGH = 110;
     const abnormalReadings = hrData.filter(
       (item) => item.value < NORMAL_LOW || item.value > NORMAL_HIGH
     );
