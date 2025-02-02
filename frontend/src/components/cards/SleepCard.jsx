@@ -223,7 +223,7 @@ export default function SleepCard() {
       </span>
       <div className="card-content">
         {levels.length > 0 ? (
-          <Line data={chartData} options={options} width={400} height={200} />
+          <Line data={chartData} options={options} width={400} height={300} />
         ) : (
           <p>No sleep data available.</p>
         )}

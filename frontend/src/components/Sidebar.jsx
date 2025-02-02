@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import "../styles/MainLayout.css";
 
-export default function Sidebar() {
+export default function Sidebar({ unreadCount }) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -41,6 +41,9 @@ export default function Sidebar() {
         <button className="sidebar-list-item" onClick={handleAlerts}>
           <i className="material-symbols-outlined">notifications</i>
           Alerts
+          {unreadCount > 0 && (
+            <span className="unread-badge">{unreadCount}</span>
+          )}
         </button>
 
         <button className="sidebar-list-item" onClick={handleInsights}>

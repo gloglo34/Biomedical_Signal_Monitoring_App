@@ -166,6 +166,11 @@ export default function Spo2Card() {
           text: "SpO2 (%)",
         },
       },
+      x: {
+        grid: {
+          drawOnChartArea: false,
+        },
+      },
     },
   };
 

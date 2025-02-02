@@ -210,7 +210,7 @@ export default function BrCard() {
       </span>
       <div className="card-content">
         {breathingRates.some((rate) => rate !== null) ? (
-          <Bar data={chartData} options={options} width={400} height={200} />
+          <Bar data={chartData} options={options} width={400} height={150} />
         ) : (
           <p>No Breathing Rate data available.</p>
         )}

@@ -1,14 +1,14 @@
 .grid-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-rows: auto;
   grid-template-areas:
     "hr-card-area hrv-card-area steps-card-area"
     "hr-card-area hrv-card-area steps-card-area"
-    "hr-card-area hrv-card-area sleep-card-area"
-    "spo2-card-area br-card-area sleep-card-area"
-    "spo2-card-area br-card-area skinTemp-card-area"
-    "spo2-card-area br-card-area skinTemp-card-area";
+    /* "hr-card-area hrv-card-area br-card-area" */
+    "spo2-card-area sleep-card-area br-card-area"
+    "spo2-card-area sleep-card-area skinTemp-card-area";
+  /* "spo2-card-area sleep-card-area skinTemp-card-area"; */
   gap: 20px;
 }
 

@@ -50,7 +50,9 @@ export default function Login() {
       <form onSubmit={handleLogin}>
         <h1>Login</h1>
 
-        {error && <p>{error}</p>}
+        {/* {error && <p>{error}</p>} */}
+
+        {error && <p style={{ color: "orange" }}>{error}</p>}
 
         <div className="input-box">
           <input

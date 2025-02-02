@@ -10,6 +10,7 @@ import {
   PointElement,
   LineElement,
   Tooltip,
+  Filler,
 } from "chart.js";
 
 ChartJS.register(
@@ -17,7 +18,8 @@ ChartJS.register(
   LinearScale,
   PointElement,
   LineElement,
-  Tooltip
+  Tooltip,
+  Filler
 );
 
 export default function HrCard() {
@@ -38,6 +40,9 @@ export default function HrCard() {
     patientData?.heartrate?.["activities-heart"]?.[0]?.value
       ?.restingHeartRate || "N/A";
 
+  const upperThreshold = 90;
+  const lowerThreshold = 60;
+
   const chartData = {
     labels: times,
     datasets: [
@@ -46,18 +51,43 @@ export default function HrCard() {
         data: values,
         tension: 0.3,
         borderColor: "rgba(137, 196, 244)",
-        fill: false,
+        pointRadius: values.map((value) =>
+          value > upperThreshold || value < lowerThreshold ? 3 : 0
+        ), // Show points only for out-of-range readings
+        pointBackgroundColor: values.map((value) =>
+          value > upperThreshold || value < lowerThreshold
+            ? "red"
+            : "transparent"
+        ), // Red points for out-of-range readings
+        fill: {
+          target: "origin",
+          above: "rgba(137, 196, 244,0.2)",
+        },
+        pointHoverBackgroundColor: "black",
       },
     ],
   };
 
   const options = {
     responsive: true,
+    maintainAspectRation: false,
+    interaction: {
+      mode: "index",
+      intersect: false,
+    },
     scales: {
       y: {
         title: {
           display: true,
           text: "Heart Rate (bpm)",
+        },
+        grid: {
+          drawOnChartArea: false,
+        },
+      },
+      x: {
+        grid: {
+          drawOnChartArea: false,
         },
       },
     },
@@ -89,11 +119,13 @@ export default function HrCard() {
       </span>
       <div className="card-content">
         <p>Resting heart rate : {restingHeartRate}</p>
-        {heartRateData.length > 0 ? (
-          <Line data={chartData} options={options} height={300} width={400} />
-        ) : (
-          <p>No heart rate data available.</p>
-        )}
+        <div className="chart-container">
+          {heartRateData.length > 0 ? (
+            <Line data={chartData} options={options} height={300} width={400} />
+          ) : (
+            <p>No heart rate data available.</p>
+          )}
+        </div>
       </div>
     </div>
   );

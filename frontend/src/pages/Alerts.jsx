@@ -1,9 +1,12 @@
 import { useEffect, useState, useContext } from "react";
+import { useOutletContext } from "react-router-dom";
 import { PatientContext } from "../context/PatientContext";
 import "../styles/Alerts.css";
 
 export default function Alerts() {
   const { selectedPatientEmail } = useContext(PatientContext);
+
+  const { setUnreadCount } = useOutletContext();
 
   const [alerts, setAlerts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -23,6 +26,7 @@ export default function Alerts() {
 
         const data = await response.json();
         setAlerts(data);
+
         setLoading(false);
       } catch (error) {
         console.error("Error fetching alerts:", error);
@@ -44,6 +48,11 @@ export default function Alerts() {
           alert._id === id ? { ...alert, read: true } : alert
         )
       );
+
+      const unreadCount = alerts.filter(
+        (alert) => alert._id !== id && !alert.read
+      ).length;
+      setUnreadCount(unreadCount);
     } catch (error) {
       console.error("Error marking alert as read:", error);
     }
@@ -51,6 +60,12 @@ export default function Alerts() {
 
   const dismissAlert = (id) => {
     setAlerts((prevAlerts) => prevAlerts.filter((alert) => alert._id !== id));
+
+    // Update unread count
+    const unreadCount = alerts.filter(
+      (alert) => alert._id !== id && !alert.read
+    ).length;
+    setUnreadCount(unreadCount);
   };
 
   return (

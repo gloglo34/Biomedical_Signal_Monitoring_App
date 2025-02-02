@@ -10,26 +10,29 @@ import MainLayout from "./components/MainLayout";
 import Alerts from "./pages/Alerts";
 import Insights from "./pages/insights/Insights";
 import PatientProfile from "./pages/PatientProfile";
+import { PatientProvider } from "./context/PatientContext";
 
 export default function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route element={<PrivateRoutes />}>
-          <Route path="/welcome" element={<Welcome />} />
-          <Route path="/managePatients" element={<ManagePatients />} />
-          <Route path="/dashboard" element={<MainLayout />}>
-            <Route index element={<Dashboard />} />
-            <Route path="alerts" element={<Alerts />} />
-            <Route path="insights" element={<Insights />} />
-            <Route path="patientProfile" element={<PatientProfile />} />
+      <PatientProvider>
+        <Routes>
+          <Route element={<PrivateRoutes />}>
+            <Route path="/welcome" element={<Welcome />} />
+            <Route path="/managePatients" element={<ManagePatients />} />
+            <Route path="/dashboard" element={<MainLayout />}>
+              <Route index element={<Dashboard />} />
+              <Route path="alerts" element={<Alerts />} />
+              <Route path="insights" element={<Insights />} />
+              <Route path="patientProfile" element={<PatientProfile />} />
+            </Route>
           </Route>
-        </Route>
-        <Route element={<PublicRoutes />}>
-          <Route path="/" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-        </Route>
-      </Routes>
+          <Route element={<PublicRoutes />}>
+            <Route path="/" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Route>
+        </Routes>
+      </PatientProvider>
     </BrowserRouter>
   );
 }

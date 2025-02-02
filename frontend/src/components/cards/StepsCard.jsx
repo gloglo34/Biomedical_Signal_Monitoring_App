@@ -135,6 +135,15 @@ export default function StepsCard() {
           text: "Steps",
         },
       },
+      x: {
+        title: {
+          display: true,
+          text: "Time",
+        },
+        grid: {
+          drawOnChartArea: false,
+        },
+      },
     },
   };
 
@@ -165,7 +174,7 @@ export default function StepsCard() {
       <div className="card-content">
         <p>Total steps : {totalSteps}</p>
         {stepsData.length > 0 ? (
-          <Bar data={chartData} options={options} width={400} height={200} />
+          <Bar data={chartData} options={options} width={400} height={300} />
         ) : (
           <p>No steps data available.</p>
         )}
