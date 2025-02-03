@@ -1,4 +1,4 @@
-.profile-page {
+/* .profile-page {
   display: flex;
   gap: 20px;
   flex-wrap: wrap;
@@ -12,4 +12,71 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   flex: 1;
   min-width: 150px;
+} */
+
+.profile-page {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  padding: 20px;
+  background-color: #f5f7fa;
+}
+
+.profile-card,
+.device-info {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.profile-card img.profile-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+}
+
+.profile-card p,
+.device-info p {
+  margin: 10px 0;
+  font-size: 1rem;
+}
+
+.profile-card h2,
+.device-info h2 {
+  font-size: 1.5rem;
+  color: #0f2573;
+  margin-bottom: 20px;
+}
+
+.profile-card strong,
+.device-info strong {
+  font-weight: 600;
+  color: #333;
+}
+
+@media (max-width: 768px) {
+  .profile-page {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-card,
+  .device-info {
+    width: 100%;
+  }
+}
+
+.device-info .device-icon {
+  width: 100px; /* Adjust the size as needed */
+  height: 100px;
+  margin: 10px 0; /*Add some space between the icon and the heading*/
+  display: flex;
+  margin-left: 10px;
+  margin-right: auto;
 }

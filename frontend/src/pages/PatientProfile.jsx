@@ -1,6 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import { PatientContext } from "../context/PatientContext";
 import "../styles/PatientProfile.css";
+import myIcon from "../assets/icon.png";
 
 export default function PatientProfile() {
   const { selectedPatientEmail } = useContext(PatientContext);
@@ -55,16 +56,21 @@ export default function PatientProfile() {
         }
 
         const res = await response.json();
-        setDevice(res[0].deviceVersion || "N/A");
-        setBatteryLevel(res[0].batteryLevel || "N/A");
-        setType(res[0].type || "N/A");
-        setLastSyncTime(res[0].lastSyncTime || "N/A");
+        setDevice(res[0]?.deviceVersion || "No data available");
+        setBatteryLevel(res[0]?.batteryLevel || "No data available");
+        setType(res[0]?.type || "No data available");
+        setLastSyncTime(res[0]?.lastSyncTime || "No data available");
       } catch (error) {
         console.error("There was a problem with the fetch operation: ", error);
       }
     };
+
     fetchPatientProfileData();
     fetchDeviceInfo();
+  }, [selectedPatientEmail]);
+
+  useEffect(() => {
+    if (!selectedPatientEmail) return;
   }, [selectedPatientEmail]);
 
   return (
@@ -100,6 +106,8 @@ export default function PatientProfile() {
 
       <div className="device-info">
         <h2>Device Information</h2>
+
+        <img src={myIcon} alt="Fitness tracker icon" className="device-icon" />
         <p>
           <strong>Device: </strong>
           {device}
@@ -114,7 +122,7 @@ export default function PatientProfile() {
         </p>
         <p>
           <strong>Last sync time: </strong>
-          {lastSyncTime}
+          {lastSyncTime ? new Date(lastSyncTime).toLocaleString() : "N/A"}
         </p>
       </div>
     </div>

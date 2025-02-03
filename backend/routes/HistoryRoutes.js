@@ -2,6 +2,7 @@ import express, { json } from "express";
 import HeartRate from "../models/HeartRate.js";
 import HRV from "../models/HRV.js";
 import Spo2 from "../models/Spo2.js";
+import Sleep from "../models/Sleep.js";
 
 const router = express.Router();
 
@@ -112,6 +113,41 @@ router.get("/spo2", async (req, res) => {
     res.json(response);
   } catch (error) {
     console.error(`Error fetching Spo2 data:`, error);
+    res.status(500), json({ error: "Internal server error" });
+  }
+});
+
+router.get("/sleep", async (req, res) => {
+  const { email } = req.query;
+
+  if (!email) {
+    return res.status(400).json({ error: "Patient email is reqired." });
+  }
+
+  try {
+    //Get today's date and calculate the date 2 days ago
+    const today = new Date();
+    const threeDaysAgo = new Date(today.getTime() - 3 * 24 * 60 * 60 * 1000);
+
+    //Fetch sleep data for last 3 days
+    const sleepData = await Sleep.find({
+      email,
+      date: { $gte: threeDaysAgo.toISOString().slice(0, 10) },
+    }).sort({ date: 1 });
+
+    //Structure the response
+    const response = sleepData.map((record) => ({
+      date: record.date,
+      duration: record.duration || 0,
+      levelsData: record.levelsData.map((entry) => ({
+        dateTime: entry.dateTime,
+        level: entry.level,
+        seconds: entry.seconds,
+      })),
+    }));
+    res.json(response);
+  } catch (error) {
+    console.error(`Error fetching sleep data:`, error);
     res.status(500), json({ error: "Internal server error" });
   }
 });

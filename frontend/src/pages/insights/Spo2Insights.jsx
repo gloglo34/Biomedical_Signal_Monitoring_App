@@ -77,12 +77,28 @@ export default function SpO2Insights() {
       {
         label: "SpO2 (%)",
         data: intradayData.map((item) => item.value),
-        borderColor: "rgba(75, 192, 192, 1)",
+        borderColor: "rgba(137, 196, 244)",
         backgroundColor: "rgba(75, 192, 192, 0.2)",
-        fill: true,
         tension: 0.4,
       },
     ],
+  };
+
+  const options = {
+    responsive: true,
+    scales: {
+      y: {
+        title: {
+          display: true,
+          text: "SpO2 (%)",
+        },
+      },
+      x: {
+        grid: {
+          drawOnChartArea: false,
+        },
+      },
+    },
   };
 
   if (loading) {
@@ -105,7 +121,7 @@ export default function SpO2Insights() {
             </option>
           ))}
         </select>
-        <Line data={intradaySpO2ChartData} />
+        <Line data={intradaySpO2ChartData} options={options} />
       </div>
       <div className="info-container">
         <strong>What is oxygen saturation (SpO2)?</strong>

@@ -133,42 +133,51 @@ export default function HeartRateInsights() {
 
   return (
     <div className="heartrate-insights-container">
-      <div className="heartrate-section">
-        <div className="graph-container">
-          <h5>Intraday Heart Rate History</h5>
-          <label htmlFor="date-select">Select Date: </label>
-          <select
-            id="date-select"
-            value={selectedDate}
-            onChange={(e) => setSelectedDate(e.target.value)}
-          >
-            {lastThreeDates.map((date) => (
-              <option key={date} value={date}>
-                {date}
-              </option>
-            ))}
-          </select>
-          <Line data={intradayHeartRateChartData} />
-        </div>
-        <div className="info-container">
-          <p>
-            This graph shows intraday heart rate insights for the selected day.
-            Use the dropdown to view minute-by-minute data.
-          </p>
-        </div>
+      <div className="graph-container">
+        <h5>Heart Rate History</h5>
+        <label htmlFor="date-select">Select Date: </label>
+        <select
+          id="date-select"
+          value={selectedDate}
+          onChange={(e) => setSelectedDate(e.target.value)}
+        >
+          {lastThreeDates.map((date) => (
+            <option key={date} value={date}>
+              {date}
+            </option>
+          ))}
+        </select>
+        <Line data={intradayHeartRateChartData} />
       </div>
 
-      <div className="heartrate-section">
-        <div className="graph-container">
-          <h5>Resting Heart Rate History (Last 3 Days)</h5>
-          <Line data={restingHeartRateChartData} />
-        </div>
-        <div className="info-container">
-          <p>
-            The graph shows the resting heart rate trend for the last three
-            days.
-          </p>
-        </div>
+      <div className="info-container">
+        <strong>What is resting heart rate (RHR)?</strong>
+        <p>
+          RHR is the number of times the heart beats per minute when one is
+          still and well-rested. RHR typically ranges from 60 - 100bpm, but can
+          vary based on age and fitness level.
+        </p>
+        <strong>What is Intraday heart rate? </strong>
+        <p>
+          Intrday heart rate provides detailed heart rate measurements recorded
+          throughout the day,offering insights into daily fluctuations based on
+          activity and rest.
+        </p>
+        <strong>Graph contents</strong>
+        <p>
+          In the graph, you can visulaize intraday heart rate trends throughout
+          the day as well as resting heart rate. Historical data is available
+          for the last 3 days. Use the Date drop down to switch the date.
+        </p>
+        <strong>Why it matters</strong>
+        <p>
+          Heart rate can be an important indicator of fitness level and overall
+          cardiovascular health. In general, active people often have lower
+          resting heartarate. Many factors influence heart rate: stress,alcohol
+          or caffeine intake or fever usually raise heart rate while exercise or
+          meditation usually lowers it. Air temperature and certain medications
+          can also affect heart rate.
+        </p>
       </div>
     </div>
   );

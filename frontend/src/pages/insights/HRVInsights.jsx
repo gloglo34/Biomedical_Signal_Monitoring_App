@@ -106,7 +106,7 @@ export default function HRVInsights() {
       {
         label: "RMSSD (ms)",
         data: intradayData.map((item) => item.rmssd),
-        borderColor: "rgb(228, 145, 67)",
+        borderColor: "rgba(137, 196, 244)",
         backgroundColor: "rgba(75, 192, 192, 0.2)",
         fill: false,
         tension: 0.4,
@@ -121,6 +121,9 @@ export default function HRVInsights() {
         title: {
           display: true,
           text: "Time",
+        },
+        grid: {
+          drawOnChartArea: false,
         },
       },
       y: {

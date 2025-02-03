@@ -3,6 +3,7 @@ import Patient from "../models/Patient.js";
 import { saveHeartRate } from "./heartRateService.js";
 import { saveHRV } from "./hrvService.js";
 import { saveSpo2 } from "./Spo2Service.js";
+import { saveSleep } from "./sleepService.js";
 
 cron.schedule("59 * * * *", async () => {
   console.log("Running hourly syncing of health metrics...");
@@ -38,6 +39,12 @@ cron.schedule("59 * * * *", async () => {
         const spo2Saved = await saveSpo2(patient, today);
         if (spo2Saved) {
           console.log(`SpO2 data saved for patient: ${patient.email}`);
+        }
+
+        //Save Sleep data
+        const sleepSaved = await saveSleep(patient, today);
+        if (sleepSaved) {
+          console.log(`Sleep data saved for patient: ${patient.email}`);
         }
       } catch (error) {
         console.error(

@@ -1,9 +1,45 @@
+import axios from "axios";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 export default function Register() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+
+    setError("");
+
+    if (password !== confirmPassword) {
+      setError("Passwords do no match");
+      return;
+    }
+
+    try {
+      const response = await axios.post(`https://localhost:443/auth/register`, {
+        email,
+        password,
+      });
+
+      navigate("/");
+    } catch (err) {
+      setError(
+        err.response?.data?.message || "Registration failed. Please try again"
+      );
+    }
+  };
+
   return (
     <div className="wrapper">
-      <form>
+      <form onSubmit={handleRegister}>
         <h1>Register</h1>
         <p>Please fill in this form to create an account.</p>
+
+        {error && <p style={{ color: "orange" }}>{error}</p>}
 
         <div className="input-box">
           <input
@@ -11,6 +47,8 @@ export default function Register() {
             placeholder="Enter email"
             name="email"
             id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
@@ -21,6 +59,8 @@ export default function Register() {
             placeholder="Enter password"
             name="password"
             id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             required
           />
         </div>
@@ -30,6 +70,8 @@ export default function Register() {
             type="password"
             placeholder="Confirm password"
             name="password-confirm"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
             id="password-confirm"
             required
           />

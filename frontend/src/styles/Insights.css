@@ -27,12 +27,12 @@
   font-weight: bold;
 }
 
-.heartrate-container {
+/* .heartrate-container {
   display: grid;
   grid-template-columns: 1fr;
   gap: 2rem;
   margin: 1rem 0;
-}
+} */
 
 .heartrate-section {
   display: grid;
@@ -55,7 +55,8 @@
 }
 
 .spo2-insights-container,
-.hrv-insights-container {
+.hrv-insights-container,
+.heartrate-insights-container {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
