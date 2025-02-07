@@ -182,7 +182,7 @@ router.get("/heartrate", async (req, res) => {
 
     //3) Apply threshold logic
     const NORMAL_LOW = 55;
-    const NORMAL_HIGH = 110;
+    const NORMAL_HIGH = 120;
     const abnormalReadings = hrData.filter(
       (item) => item.value < NORMAL_LOW || item.value > NORMAL_HIGH
     );

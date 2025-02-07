@@ -87,6 +87,9 @@ export default function SleepCard() {
           display: true,
           text: "Time",
         },
+        grid: {
+          drawOnChartArea: false,
+        },
       },
     },
   };

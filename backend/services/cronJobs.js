@@ -31,7 +31,7 @@ cron.schedule("59 * * * *", async () => {
 
         // Save HRV data
         const hrvSaved = await saveHRV(patient, today);
-        if (hrSaved) {
+        if (hrvSaved) {
           console.log(`HRV data saved for patient: ${patient.email}`);
         }
 

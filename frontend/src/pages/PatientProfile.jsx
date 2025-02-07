@@ -2,105 +2,46 @@ import { useEffect, useState, useContext } from "react";
 import { PatientContext } from "../context/PatientContext";
 import "../styles/PatientProfile.css";
 import myIcon from "../assets/icon.png";
+import { usePatientData } from "../hooks/usePatientData";
 
 export default function PatientProfile() {
   const { selectedPatientEmail } = useContext(PatientContext);
+  const { data, isLoading, error } = usePatientData(selectedPatientEmail);
 
-  const [age, setAge] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [gender, setGender] = useState("");
-  const [weight, setWeight] = useState("");
-  const [height, setHeight] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState("");
-  const [avatar, setAvatar] = useState("");
+  if (isLoading) return <p>Loading patient data...</p>;
+  if (error) return <p>Error fetching data:{error.message}</p>;
 
-  const [device, setDevice] = useState("");
-  const [batteryLevel, setBatteryLevel] = useState("");
-  const [type, setType] = useState("");
-  const [lastSyncTime, setLastSyncTime] = useState();
-
-  useEffect(() => {
-    if (!selectedPatientEmail) return;
-
-    const fetchPatientProfileData = async () => {
-      try {
-        const response = await fetch(
-          `https://localhost:443/fitbitData/profile?email=${selectedPatientEmail}`
-        );
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-
-        const res = await response.json();
-        setAge(res.user.age || "N/A");
-        setGender(res.user.gender || "N/A");
-        setFirstName(res.user.firstName || "N/A");
-        setLastName(res.user.lastName || "N/A");
-        setWeight(res.user.weight || "N/A");
-        setHeight(res.user.height || "N/A");
-        setDateOfBirth(res.user.dateOfBirth || "N/A");
-        setAvatar(res.user.avatar || "https://via.placeholder.com/150");
-      } catch (error) {
-        console.error("There was a problem with the fetch operation: ", error);
-      }
-    };
-
-    const fetchDeviceInfo = async () => {
-      try {
-        const response = await fetch(
-          `https://localhost:443/fitbitData/devices?email=${selectedPatientEmail}`
-        );
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-
-        const res = await response.json();
-        setDevice(res[0]?.deviceVersion || "No data available");
-        setBatteryLevel(res[0]?.batteryLevel || "No data available");
-        setType(res[0]?.type || "No data available");
-        setLastSyncTime(res[0]?.lastSyncTime || "No data available");
-      } catch (error) {
-        console.error("There was a problem with the fetch operation: ", error);
-      }
-    };
-
-    fetchPatientProfileData();
-    fetchDeviceInfo();
-  }, [selectedPatientEmail]);
-
-  useEffect(() => {
-    if (!selectedPatientEmail) return;
-  }, [selectedPatientEmail]);
+  const profile = data?.profile?.user || {};
+  const devices = data?.devices?.[0] || {};
 
   return (
     <div className="profile-page">
       <div className="profile-card">
         <h2>Patient Profile</h2>
-        <img src={avatar} className="profile-avatar" />
+        <img src={profile.avatar} className="profile-avatar" />
         <p>
-          <strong>First Name: </strong> {firstName}
+          <strong>First Name: </strong> {profile.firstName || "N/A"}
         </p>
         <p>
           <strong>Last Name: </strong>
-          {lastName}
+          {profile.lastName || "N/A"}
         </p>
         <p>
           <strong>Age: </strong>
-          {age}
+          {profile.age || "N/A"}
         </p>
         <p>
-          <strong>Gender: </strong> {gender}
+          <strong>Gender: </strong> {profile.gender || "N/A"}
         </p>
         <p>
-          <strong>Date of Birth:</strong> {dateOfBirth}
+          <strong>Date of Birth:</strong> {profile.dateOfBirth || "N/A"}
         </p>
         <p>
           <strong>Weight: </strong>
-          {weight} kg
+          {profile.weight || "N/A"} kg
         </p>
         <p>
-          <strong>Height: </strong> {height} cm
+          <strong>Height: </strong> {profile.height || "N/A"} cm
         </p>
       </div>
 
@@ -110,19 +51,21 @@ export default function PatientProfile() {
         <img src={myIcon} alt="Fitness tracker icon" className="device-icon" />
         <p>
           <strong>Device: </strong>
-          {device}
+          {devices.deviceVersion || "No data"}
         </p>
         <p>
           <strong>Battery Level: </strong>
-          {batteryLevel}%
+          {devices.batteryLevel || "No data"}%
         </p>
         <p>
           <strong>Type: </strong>
-          {type}
+          {devices.type || "No data"}
         </p>
         <p>
           <strong>Last sync time: </strong>
-          {lastSyncTime ? new Date(lastSyncTime).toLocaleString() : "N/A"}
+          {devices.lastSyncTime
+            ? new Date(devices.lastSyncTime).toLocaleString()
+            : "No data"}
         </p>
       </div>
     </div>

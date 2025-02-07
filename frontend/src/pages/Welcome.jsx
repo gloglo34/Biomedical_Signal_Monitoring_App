@@ -16,14 +16,10 @@ export default function Welcome() {
     navigate("/managePatients");
   };
 
-  const handleViewDashboard = () => {
-    navigate("/dashboard");
-  };
-
   return (
     <div className="home-container">
       <header className="welcome-header">
-        <h1>Welcome to MediTrack Pro</h1>
+        <h1>Welcome to Utanostraz</h1>
         <p>Your ultimate solution for near real-time health monitoring.</p>
       </header>
 
@@ -45,7 +41,7 @@ export default function Welcome() {
           <section className="welcome-overview">
             <h2>About the App</h2>
             <p>
-              MediTrack Pro allows you to monitor your patients' vital health
+              Utanostraz allows you to monitor your patients' vital health
               metrics in real-time using wearable devices like Fitbit. Get
               insights into their heart rate, sleep patterns, and more, all in
               one place.
@@ -67,9 +63,6 @@ export default function Welcome() {
           </section>
         </div>
         <section className="cta-buttons">
-          <button className="cta-btn" onClick={handleViewDashboard}>
-            View Dashboard
-          </button>
           <button className="cta-btn" onClick={handleManagePatients}>
             Manage Patients
           </button>

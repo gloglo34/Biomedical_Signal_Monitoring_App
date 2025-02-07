@@ -80,9 +80,13 @@
 }
 
 .sidebar-brand {
-  margin-top: 15px;
-  font-size: 20px;
+  margin-top: 10px;
+  font-size: 1.7rem;
   font-weight: 700;
+  font-family: "Lobster";
+  /* color: rgba(137, 196, 244); */
+  color: white;
+  text-shadow: 2px 2px 4px rgba(247, 242, 242, 0.3);
 }
 
 .sidebar-list {

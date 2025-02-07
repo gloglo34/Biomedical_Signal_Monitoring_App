@@ -51,6 +51,7 @@ export default function HrCard() {
         data: values,
         tension: 0.3,
         borderColor: "rgba(137, 196, 244)",
+        borderWidth: 2,
         pointRadius: values.map((value) =>
           value > upperThreshold || value < lowerThreshold ? 3 : 0
         ), // Show points only for out-of-range readings

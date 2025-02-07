@@ -28,7 +28,7 @@ export default function Sidebar({ unreadCount }) {
   return (
     <aside className="sidebar">
       <div className="sidebar-title">
-        <div className="sidebar-brand">MediTrack</div>
+        <div className="sidebar-brand">Utanostraz</div>
         <span className="close-icon">X</span>
       </div>
 

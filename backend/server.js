@@ -36,23 +36,13 @@ app.get("/", (req, res) => {
   res.send("<h1>Welcome to the backend. HTTPS is working!</h1> ");
 });
 
-app.get("/callback", (req, res) => {
-  res.send("<h1>Callback url</h1>");
-});
-
 //routes
 app.use("/auth", AuthRoutes);
-
 app.use("/email", EmailRoutes);
-
 app.use("/oauth2", OAuth2Routes);
-
 app.use("/patients", PatientRoutes);
-
 app.use("/fitbitData", DataRoutes);
-
 app.use("/history", HistoryRoutes);
-
 app.use("/", AlertRoutes);
 
 // const PORT = 5000;

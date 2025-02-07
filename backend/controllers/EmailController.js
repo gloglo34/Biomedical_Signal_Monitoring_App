@@ -34,7 +34,7 @@ export const sendEmail = async (req, res) => {
       const fitbitAuthURL = `https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=${process.env.CLIENT_ID}&redirect_uri=${redirect_uri}&scope=activity+cardio_fitness+electrocardiogram+heartrate+irregular_rhythm_notifications+location+nutrition+oxygen_saturation+profile+respiratory_rate+settings+sleep+social+temperature+weight&state=${patientId}`;
 
       emailContent = {
-        subject: "MediTrack Pro Authorization Request",
+        subject: "Utanostraz Authorization Request",
         text: `Hi, please authorize access to your Fitbit data by clicking the following link: ${fitbitAuthURL}`,
         html: `<p>Hi,</p>
               <p>Please authorize access to your Fitbit data by clicking the link below:</p>
