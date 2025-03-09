@@ -10,7 +10,14 @@ The Biomedical Signals Monitoring System is a full-stack web application that al
 
 ## Screenshots
 Here are some previews of the application:
+
 ![Dashboard View](screenshots/dash1.png)
-_Dashboard displaying real-time biomedical data._
+_Dashboard displaying biomedical data._
+
+![Insights](screenshots/insights.png)
+_Insights page_
+
+![Profile](screenshots/profile.jpg)
+_Profile page_
 
 
